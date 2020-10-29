@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.template import loader
 # Real Python
 from django.http import HttpResponse
 from rest_framework.decorators import api_view
@@ -18,6 +19,15 @@ from MobApp.serializers import RaceSerializer, CharacterSerializer, StatSerializ
 
 # Create your views here.
 #@csrf_exempt
+def index(request):
+    races = Race.objects.all()
+    template = loader.get_template('MobApp/index.html')
+    context = {
+        'races_list' :races,
+    }
+    return HttpResponse(template.render(context,request))
+
+
 @api_view(['GET','POST'])
 def race_collection(request):
     if request.method == 'GET':
@@ -116,7 +126,8 @@ def stat_collection(request):
 @api_view(['GET','PUT','DELETE'])
 def stat_api(request,id):
     try:
-        stat = Stat.objects.get(pk=id)
+        character = Character.objects.get(pk=id)
+        stat = Stat.objects.get(character=character)
     except Stat.DoesNotExist:
         return HttpResponse(status=404)
 

@@ -12,6 +12,7 @@ class Race(models.Model):
 
 class Character(models.Model):
     character_id = models.AutoField(primary_key=True)
+    character_key = models.IntegerField(unique=True)
     character_name = models.CharField(max_length=20)
     character_description = models.CharField(max_length=100)
     race = models.ForeignKey(Race,on_delete=models.CASCADE)

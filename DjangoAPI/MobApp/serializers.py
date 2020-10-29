@@ -18,6 +18,7 @@ class CharacterSerializer(serializers.ModelSerializer):
         model = Character
         fields = (
             'character_id',
+            'character_key',
             'character_name',
             'character_description',
             'race',

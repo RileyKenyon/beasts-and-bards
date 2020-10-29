@@ -1,0 +1,9 @@
+{% if races_list %}
+    <ul>
+    {% for race in races_list %}
+        <li><a href="/api/v1/races/{{race.race_id}}">{{race.race_name}}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No race data available</p>
+{% endif %}
