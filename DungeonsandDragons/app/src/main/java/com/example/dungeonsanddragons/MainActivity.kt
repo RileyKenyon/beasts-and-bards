@@ -1,28 +1,44 @@
 package com.example.dungeonsanddragons
 
-import android.util.Log
-import android.content.Intent
-import android.nfc.NdefMessage
-import android.nfc.NdefRecord
 import android.nfc.NfcAdapter
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.TextView
-import com.bumptech.glide.Glide
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
+import com.example.dungeonsanddragons.databinding.ActivityMainBinding
 
 private const val TAG = "MainApplication"
 
 class MainActivity : AppCompatActivity() {
-    // List of internal records from NFC read
+
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val binding = ActivityMainBinding.inflate(layoutInflater)
         // Set Main view on launch and load D8 gif
-        setContentView(R.layout.activity_main)
-        val imageView: ImageView = findViewById(R.id.title_image)
-        Glide.with(this).load(R.drawable.title).into(imageView)
+        setContentView(binding.root)
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+        setupActionBarWithNavController(navController)
 
+    // Check if the NFC adapter triggered the application launch
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent?.action) {
+            navController.navigate(R.id.action_startup_to_NFC)
+//            intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMessages ->
+//                currentNdefMessages = rawMessages.map { it as NdefMessage }
+//                currentNdefRecords = currentNdefMessages.flatMap { it.records.asList() }
+//
+//                // Read the payload and convert to a UTF8 string
+//                val textView: TextView = findViewById(R.id.nfc_data)
+//                textView.text = getCurrentRecordText()
+//            }
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

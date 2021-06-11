@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/startup">
+
+    <fragment
+        android:id="@+id/startup"
+        android:name="com.example.dungeonsanddragons.Startup"
+        android:label="startup"
+        tools:layout="@layout/startup">
+        <action
+            android:id="@+id/action_startup_to_login"
+            app:destination="@id/login"
+            app:popUpTo="@id/login" />
+        <action
+            android:id="@+id/action_startup_to_sign_up"
+            app:destination="@id/sign_up"
+            app:popUpTo="@id/sign_up" />
+        <action
+            android:id="@+id/action_startup_to_NFC"
+            app:destination="@id/NFC"
+            app:popUpTo="@id/NFC" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/login"
+        android:name="com.example.dungeonsanddragons.Login"
+        android:label="login"
+        tools:layout="@layout/login">
+        <action
+            android:id="@+id/action_login_to_dashboard"
+            app:destination="@id/dashboard" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/sign_up"
+        android:name="com.example.dungeonsanddragons.Signup"
+        android:label="signup"
+        tools:layout="@layout/sign_up">
+        <action
+            android:id="@+id/action_sign_up_to_dashboard"
+            app:destination="@id/dashboard" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/dashboard"
+        android:name="com.example.dungeonsanddragons.Dashboard"
+        android:label="dashboard"
+        tools:layout="@layout/dashboard">
+
+        <action
+            android:id="@+id/action_dashboard_to_NFC"
+            app:destination="@id/NFC" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/NFC"
+        android:name="com.example.dungeonsanddragons.NFC"
+        android:label="nfc"
+        tools:layout="@layout/nfc" />
+</navigation>

@@ -2,4 +2,6 @@
     <string name="app_name">Dungeons and Dragons</string>
     <string name="title_image">Title Image</string>
     <string name="nfc_text">Scan Tag to populate text</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
 </resources>
