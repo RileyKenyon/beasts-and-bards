@@ -15,6 +15,7 @@ import android.util.Log
 import androidx.fragment.app.FragmentActivity
 
 private const val TAG = "NFC"
+fun ByteArray.toHexString() = joinToString("") { "%02x".format(it) }
 
 class NFC : AppCompatActivity(){
     // List of internal records from NFC read
@@ -47,8 +48,8 @@ class NFC : AppCompatActivity(){
             TNF_WELL_KNOWN -> currentNdefRecords[0].payload.toString(Charsets.UTF_8)
             else -> ""
         }
-//        Log.d(TAG + "_TNF",currentNdefRecords[0].tnf.toString())
-        Log.d(TAG,currentNdefRecords[0].id.joinToString(Charsets.))
+        Log.d(TAG, currentNdefMessages[0].toByteArray().toHexString())
+        Log.d(TAG, currentNdefRecords[0].toMimeType())
         return payload
     }
 
@@ -56,4 +57,8 @@ class NFC : AppCompatActivity(){
         // Return most recent NFC records
         return currentNdefRecords[0].id.toString(Charsets.UTF_8)
     }
+
+//    private fun getSerialId(): String {
+//        currentNdefMessages[0].toByteArray().toString()
+//    }
 }
