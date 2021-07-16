@@ -4,10 +4,13 @@ import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.dungeonsanddragons.databinding.ActivityMainBinding
 
 private const val TAG = "MainApplication"
@@ -15,6 +18,7 @@ private const val TAG = "MainApplication"
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,10 +28,13 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        setupActionBarWithNavController(navController)
+        appBarConfiguration = AppBarConfiguration(navController.graph)
 
-        // Hide action bar
-//        supportActionBar?.hide()
+        // Auto Action bar with navigateUp()
+        setupActionBarWithNavController(navController,appBarConfiguration)
+
+        // Alternate toolbar setup
+//        findViewById<Toolbar>(R.id.toolbar).setupWithNavController(navController,appBarConfiguration)
 
         // Check if the NFC adapter triggered the application launch
         if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent?.action) {

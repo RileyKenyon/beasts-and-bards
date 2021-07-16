@@ -39,12 +39,12 @@ class NFC : Fragment(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Get messages
-        currentNdefMessages = arguments?.getParcelableArrayList<NdefMessage>("rawMessages")?
-        currentNdefRecords = currentNdefMessages.flatMap { it.records.asList() }
-
-        // Read the payload and convert to a UTF8 string
-        val textView: TextView = binding.nfcData
-        textView.text = getCurrentRecordText()
+//        currentNdefMessages = arguments?.getParcelableArrayList<NdefMessage>("rawMessages")?
+//        currentNdefRecords = currentNdefMessages.flatMap { it.records.asList() }
+//
+//        // Read the payload and convert to a UTF8 string
+//        val textView: TextView = binding.nfcData
+//        textView.text = getCurrentRecordText()
     }
 
     override fun onCreateView(

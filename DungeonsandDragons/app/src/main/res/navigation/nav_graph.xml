@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/startup"
         android:name="com.example.dungeonsanddragons.Startup"
-        android:label="startup"
+        android:label="@string/app_name"
         tools:layout="@layout/startup">
         <action
             android:id="@+id/action_startup_to_login"
