@@ -13,6 +13,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.example.dungeonsanddragons.databinding.StartupBinding
+import com.google.android.material.appbar.MaterialToolbar
 
 private const val TAG = "Startup"
 
@@ -49,11 +50,11 @@ class Startup : Fragment() {
             Navigation.createNavigateOnClickListener(R.id.action_startup_to_sign_up)
         )
 
-//        // Toolbar
+        // Toolbar
 //        val navController = findNavController()
 //        val appBarConfiguration = AppBarConfiguration(navController.graph)
 //
-//        view.findViewById<Toolbar>(R.id.toolbar)
+//        view.findViewById<MaterialToolbar>(R.id.topAppBar)
 //            .setupWithNavController(navController, appBarConfiguration)
     }
 

@@ -9,9 +9,11 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.dungeonsanddragons.databinding.ActivityMainBinding
+import com.google.android.material.appbar.MaterialToolbar
 
 private const val TAG = "MainApplication"
 
@@ -25,16 +27,17 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         // Set Main view on launch and load D8 gif
         setContentView(binding.root)
+
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(navController.graph)
-
+//        setSupportActionBar(findViewById<MaterialToolbar>(R.id.topAppBar))
         // Auto Action bar with navigateUp()
-        setupActionBarWithNavController(navController,appBarConfiguration)
+//        setupActionBarWithNavController(navController,appBarConfiguration)
 
         // Alternate toolbar setup
-//        findViewById<Toolbar>(R.id.toolbar).setupWithNavController(navController,appBarConfiguration)
+        findViewById<MaterialToolbar>(R.id.topAppBar).setupWithNavController(navController,appBarConfiguration)
 
         // Check if the NFC adapter triggered the application launch
         if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent?.action) {
@@ -57,6 +60,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+//        return navController.navigateUp() || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }
