@@ -1,8 +1,10 @@
 package com.example.dungeonsanddragons
 
+import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -24,11 +26,20 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         setupActionBarWithNavController(navController)
 
-    // Check if the NFC adapter triggered the application launch
+        // Hide action bar
+//        supportActionBar?.hide()
+
+        // Check if the NFC adapter triggered the application launch
         if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent?.action) {
-            navController.navigate(R.id.action_startup_to_NFC)
+            intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMessages ->
+                val messages = rawMessages.map { it as NdefMessage }
+                val bundle = bundleOf(
+                    "rawMessages" to messages
+                )
+                navController.navigate(R.id.action_startup_to_NFC, bundle)
+            }
 //            intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMessages ->
-//                currentNdefMessages = rawMessages.map { it as NdefMessage }
+//                val currentNdefMessages = rawMessages.map { it as NdefMessage }
 //                currentNdefRecords = currentNdefMessages.flatMap { it.records.asList() }
 //
 //                // Read the payload and convert to a UTF8 string

@@ -12,16 +12,13 @@
         tools:layout="@layout/startup">
         <action
             android:id="@+id/action_startup_to_login"
-            app:destination="@id/login"
-            app:popUpTo="@id/login" />
+            app:destination="@id/login" />
         <action
             android:id="@+id/action_startup_to_sign_up"
-            app:destination="@id/sign_up"
-            app:popUpTo="@id/sign_up" />
+            app:destination="@id/sign_up" />
         <action
             android:id="@+id/action_startup_to_NFC"
-            app:destination="@id/NFC"
-            app:popUpTo="@id/NFC" />
+            app:destination="@id/NFC" />
     </fragment>
 
     <fragment

@@ -7,6 +7,7 @@ import android.nfc.NdefMessage
 import android.nfc.NdefRecord
 import android.nfc.NdefRecord.*
 import android.nfc.NfcAdapter
+import android.nfc.tech.Ndef
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.TextView
@@ -28,6 +29,7 @@ class NFC : Fragment(){
     // Initialization and binding
     private var _binding: NfcBinding? = null
     private lateinit var textView: TextView
+
     private val binding get() = _binding!!
 
     // List of internal records from NFC read
@@ -36,19 +38,13 @@ class NFC : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // set the content view as the NFC layout
-//        setContentView(binding.root)
-        // Check if the NFC adapter triggered the application launch
-//        if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent?.action) {
-//            intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMessages ->
-//                currentNdefMessages = rawMessages.map { it as NdefMessage }
-//                currentNdefRecords = currentNdefMessages.flatMap { it.records.asList() }
-//
-//                // Read the payload and convert to a UTF8 string
-//                val textView: TextView = findViewById(R.id.nfc_data)
-//                textView.text = getCurrentRecordText()
-//            }
-//        }
+        // Get messages
+        currentNdefMessages = arguments?.getParcelableArrayList<NdefMessage>("rawMessages")?
+        currentNdefRecords = currentNdefMessages.flatMap { it.records.asList() }
+
+        // Read the payload and convert to a UTF8 string
+        val textView: TextView = binding.nfcData
+        textView.text = getCurrentRecordText()
     }
 
     override fun onCreateView(

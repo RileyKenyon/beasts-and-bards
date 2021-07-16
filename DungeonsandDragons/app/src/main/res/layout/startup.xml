@@ -8,6 +8,23 @@
     tools:context=".Startup"
     android:background="@color/white">
 
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:gravity="center_horizontal"
+        android:padding="16dp"
+        android:text="@string/app_name"
+        android:textColor="@color/dark_red"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.1" />
+
     <androidx.appcompat.widget.AppCompatImageView
     android:id="@+id/title_image"
     android:layout_width="wrap_content"
@@ -16,8 +33,10 @@
     android:scaleType="fitCenter"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:srcCompat="@drawable/party_d20"/>
+    app:layout_constraintTop_toTopOf="parent" />
+
+
+
 
     <Button
         android:id="@+id/login_button"
