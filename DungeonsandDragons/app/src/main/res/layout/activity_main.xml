@@ -15,19 +15,13 @@
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:title="@string/app_name"/>
-<!--            style="@style/Widget.MaterialComponents.Toolbar.Primary"-->
+            android:theme="@style/ThemeOverlay.DungeonsAndDragons.DefaultSurface"
+            app:title="@string/app_name"
+            app:titleTextAppearance="@style/TextAppearance.DungeonsAndDragons.Toolbar"
+            />
+        <!--            style="@style/Widget.MaterialComponents.Toolbar.Primary"-->
 
     </com.google.android.material.appbar.AppBarLayout>
-
-
-<!--    <androidx.appcompat.widget.Toolbar-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:id="@+id/toolbar"-->
-<!--        android:fontFamily="cursive"-->
-<!--        android:textColor="@color/dark_red"/>-->
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
