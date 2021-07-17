@@ -29,7 +29,8 @@ fun ByteArray.toHexString() = joinToString("") { "%02x".format(it) }
 class NFC : Fragment(){
     // Initialization and binding
     private var _binding: NfcBinding? = null
-    private lateinit var textView: TextView
+    private lateinit var idTextView: TextView
+    private lateinit var payloadTextView: TextView
 
     private val binding get() = _binding!!
 
@@ -55,11 +56,13 @@ class NFC : Fragment(){
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        textView = binding.nfcData
+        idTextView = binding.nfcId
+        payloadTextView = binding.nfcData
+
         // Read the payload and convert to a UTF8 string
-//        textView.text = getCurrentRecordText()
-        textView.text = id
-        Log.i("TAG ID",textView.text.toString())
+        payloadTextView.text = getCurrentRecordText()
+        idTextView.text = id
+        Log.i("TAG ID",idTextView.text.toString())
 
     }
 

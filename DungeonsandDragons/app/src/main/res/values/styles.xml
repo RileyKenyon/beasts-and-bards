@@ -3,10 +3,6 @@
     <style name="ThemeOverlay.DungeonsAndDragons.DefaultSurface" parent="Widget.MaterialComponents.Toolbar.Surface">
         <item name="colorSurface">@color/dark_red</item>
     </style>
-<!--    <style name="TextAppearance.DungeonsAndDragons.Toolbar" parent="TextAppearance.MaterialComponents.Headline6">-->
-<!--        <item name="fontFamily">cursive</item>-->
-<!--        <item name="android:textSize">30sp</item>-->
-<!--    </style>-->
     <style name="TextAppearance.DungeonsAndDragons.Toolbar" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="fontFamily">cursive</item>
         <item name="android:textSize">25sp</item>

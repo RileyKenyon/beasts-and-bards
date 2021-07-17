@@ -19,7 +19,6 @@
             app:title="@string/app_name"
             app:titleTextAppearance="@style/TextAppearance.DungeonsAndDragons.Toolbar"
             />
-        <!--            style="@style/Widget.MaterialComponents.Toolbar.Primary"-->
 
     </com.google.android.material.appbar.AppBarLayout>
 
