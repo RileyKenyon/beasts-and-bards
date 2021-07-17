@@ -2,7 +2,9 @@ package com.example.dungeonsanddragons
 
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
+import android.nfc.Tag
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
@@ -42,20 +44,14 @@ class MainActivity : AppCompatActivity() {
         // Check if the NFC adapter triggered the application launch
         if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent?.action) {
             intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMessages ->
+                val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
                 val messages = rawMessages.map { it as NdefMessage }
                 val bundle = bundleOf(
-                    "rawMessages" to messages
+                    "rawMessages" to messages,
+                    "id" to tag?.id
                 )
                 navController.navigate(R.id.action_startup_to_NFC, bundle)
             }
-//            intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMessages ->
-//                val currentNdefMessages = rawMessages.map { it as NdefMessage }
-//                currentNdefRecords = currentNdefMessages.flatMap { it.records.asList() }
-//
-//                // Read the payload and convert to a UTF8 string
-//                val textView: TextView = findViewById(R.id.nfc_data)
-//                textView.text = getCurrentRecordText()
-//            }
         }
     }
 

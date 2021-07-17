@@ -7,6 +7,7 @@ import android.nfc.NdefMessage
 import android.nfc.NdefRecord
 import android.nfc.NdefRecord.*
 import android.nfc.NfcAdapter
+import android.nfc.Tag
 import android.nfc.tech.Ndef
 import android.os.Bundle
 import android.provider.Settings
@@ -35,16 +36,14 @@ class NFC : Fragment(){
     // List of internal records from NFC read
     private lateinit var currentNdefMessages: List<NdefMessage>
     private lateinit var currentNdefRecords: List<NdefRecord>
+    private var id : String = "Dummy"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Get messages
-//        currentNdefMessages = arguments?.getParcelableArrayList<NdefMessage>("rawMessages")?
-//        currentNdefRecords = currentNdefMessages.flatMap { it.records.asList() }
-//
-//        // Read the payload and convert to a UTF8 string
-//        val textView: TextView = binding.nfcData
-//        textView.text = getCurrentRecordText()
+        // Get messages and ID
+        id = arguments?.getByteArray("id")!!.toHexString()
+        currentNdefMessages = arguments?.getParcelableArrayList<NdefMessage>("rawMessages")!!
+        currentNdefRecords = currentNdefMessages.flatMap { it.records.asList() }
     }
 
     override fun onCreateView(
@@ -57,6 +56,11 @@ class NFC : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         textView = binding.nfcData
+        // Read the payload and convert to a UTF8 string
+//        textView.text = getCurrentRecordText()
+        textView.text = id
+        Log.i("TAG ID",textView.text.toString())
+
     }
 
     override fun onDestroyView(){
