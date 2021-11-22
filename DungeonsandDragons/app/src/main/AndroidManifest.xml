@@ -3,6 +3,7 @@
     package="com.example.dungeonsanddragons">
 
     <uses-permission android:name="android.permission.NFC"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-sdk android:minSdkVersion="16"/>
     <uses-feature android:name="android.hardware.nfc" android:required="true"/>
 
@@ -13,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DungeonsAndDragons">
-        <activity android:name=".Signup">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -24,6 +25,8 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".Signup"/>
 <!--        <activity android:name=".NFC">-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>-->
