@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.dungeonsanddragons.databinding.SignUpBinding
+import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
@@ -85,10 +86,19 @@ class Signup : AppCompatActivity() {
             AuthUI.IdpConfig.GoogleBuilder().build()
         )
 
+        // Format UI for authentication
+        val customLayout = AuthMethodPickerLayout
+            .Builder(R.layout.startup)
+            .setGoogleButtonId(R.id.sign_in_google)
+            .setEmailButtonId(R.id.sign_in_email)
+            .build()
+
         // Create and launch sign-in intent
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
+            .setAuthMethodPickerLayout(customLayout)
             .setAvailableProviders(providers)
+            .setTheme(R.style.Theme_DungeonsAndDragons)
             .build()
         signIn.launch(signInIntent)
     }

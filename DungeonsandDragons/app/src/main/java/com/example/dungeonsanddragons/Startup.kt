@@ -41,12 +41,11 @@ class Startup : Fragment() {
         Glide.with(this).load(R.drawable.title).into(binding.titleImage)
         imageView = binding.titleImage
 
-        // Login button bindings
-        binding.loginButton.setOnClickListener(
+        // sign in options
+         binding.signInGoogle.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.action_startup_to_login)
         )
-        // Signup button bindings
-        binding.signUpButton.setOnClickListener(
+        binding.signInEmail.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.action_startup_to_sign_up)
         )
 

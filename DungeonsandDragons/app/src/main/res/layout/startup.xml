@@ -15,17 +15,16 @@
             android:contentDescription="@string/title_image"
             android:scaleType="fitCenter" />
         <Button
-            android:id="@+id/login_button"
-            android:text="@string/login"
+            android:id="@+id/sign_in_google"
+            android:text="@string/google_sign_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="25dp"/>
-
         <Button
-            android:id="@+id/sign_up_button"
+            android:id="@+id/sign_in_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/sign_up"
+            android:text="@string/email_sign_in"
             android:padding="25dp"/>
 
 </LinearLayout>
