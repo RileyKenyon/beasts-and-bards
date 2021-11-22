@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/startup">
+    app:startDestination="@id/dashboard">
 
     <fragment
         android:id="@+id/startup"
@@ -11,34 +11,8 @@
         android:label="@string/app_name"
         tools:layout="@layout/startup">
         <action
-            android:id="@+id/action_startup_to_login"
-            app:destination="@id/login" />
-        <action
-            android:id="@+id/action_startup_to_sign_up"
-            app:destination="@id/sign_up" />
-        <action
             android:id="@+id/action_startup_to_NFC"
             app:destination="@id/NFC" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/login"
-        android:name="com.example.dungeonsanddragons.Login"
-        android:label="login"
-        tools:layout="@layout/login">
-        <action
-            android:id="@+id/action_login_to_dashboard"
-            app:destination="@id/dashboard" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/sign_up"
-        android:name="com.example.dungeonsanddragons.Signup"
-        android:label="signup"
-        tools:layout="@layout/sign_up">
-        <action
-            android:id="@+id/action_sign_up_to_dashboard"
-            app:destination="@id/dashboard" />
     </fragment>
 
 
@@ -51,6 +25,9 @@
         <action
             android:id="@+id/action_dashboard_to_NFC"
             app:destination="@id/NFC" />
+        <action
+            android:id="@+id/action_dashboard_to_startup"
+            app:destination="@id/startup" />
     </fragment>
 
     <fragment
@@ -58,4 +35,10 @@
         android:name="com.example.dungeonsanddragons.NFC"
         android:label="nfc"
         tools:layout="@layout/nfc" />
+
+    <fragment
+        android:id="@+id/Login"
+        android:name="com.example.dungeonsanddragons.Login"
+        android:label="login"
+        tools:layout="@layout/login" />
 </navigation>

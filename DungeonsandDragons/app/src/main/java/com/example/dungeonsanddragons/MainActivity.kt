@@ -26,8 +26,10 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
-private const val TAG = "MainApplication"
-
+/**
+ * Main Activity - entry point for the app
+ * Uses Firebase Auth to get user id
+ */
 class MainActivity : AppCompatActivity() {
 
     // Navigation instance variables
@@ -44,35 +46,35 @@ class MainActivity : AppCompatActivity() {
         // Set Main view on launch and load D8 gif
         setContentView(binding.root)
 
+        // Setup navigation and navigation app bar
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(navController.graph)
-//        setSupportActionBar(findViewById<MaterialToolbar>(R.id.topAppBar))
-        // Auto Action bar with navigateUp()
-//        setupActionBarWithNavController(navController,appBarConfiguration)
-
-        // Alternate toolbar setup
         findViewById<MaterialToolbar>(R.id.topAppBar).setupWithNavController(navController,appBarConfiguration)
 
         // Check for debug mode of the firebase
         // "10.0.2.2" is a special value which allows the Android emulator to
         // connect to "localhost" on the host computer. The port values are
         // defined in the firebase.json file.
-        if (BuildConfig.DEBUG) {
-            Firebase.database.useEmulator("10.0.2.2", 9000)
-            Firebase.auth.useEmulator("10.0.2.2", 9099)
-            Firebase.storage.useEmulator("10.0.2.2", 9199)
-        }
+//        if (BuildConfig.DEBUG) {
+//        Firebase.database.useEmulator("10.0.2.2", 9000)
+//        Firebase.auth.useEmulator("10.0.2.2", 9099)
+//        Firebase.storage.useEmulator("10.0.2.2", 9199)
+//        }
 
         // Check if user is signed in
-        val user = Firebase.auth.currentUser
+        auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
         if (user == null) {
             // Not signed in, launch the Sign In activity
-            startActivity(Intent(this, Signup::class.java))
-//            navController.navigate(R.id.startup)
+            startActivity(Intent(this, Startup::class.java))
 //            finish()
 //            return
+        } else {
+            Log.d("DEBUG", user.email!!)
+            navController.navigate(R.id.dashboard)
+//            auth.signOut()
         }
 
         // Initialize Realtime Database
@@ -95,14 +97,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
-
-    private fun signOut() {
-        AuthUI.getInstance()
-            .signOut(this)
-            .addOnCompleteListener{
-                Log.d(Signup.TAG,"Signed out successfully")
-            }
     }
 
     companion object {

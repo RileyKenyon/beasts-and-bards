@@ -10,6 +10,7 @@
     tools:context=".Startup">
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/title_image"
+            android:src="@drawable/d20"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contentDescription="@string/title_image"

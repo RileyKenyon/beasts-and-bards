@@ -7,4 +7,5 @@
     <string name="nfc_data_text">Scan Tag to get data</string>
     <string name="google_sign_in">Sign in with Google</string>
     <string name="email_sign_in">Sign in with Email</string>
+    <string name="welcome_back">Welcome Back <b>%1$s!</b></string>
 </resources>
