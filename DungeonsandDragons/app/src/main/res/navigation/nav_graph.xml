@@ -6,17 +6,6 @@
     app:startDestination="@id/dashboard">
 
     <fragment
-        android:id="@+id/startup"
-        android:name="com.example.dungeonsanddragons.Startup"
-        android:label="@string/app_name"
-        tools:layout="@layout/startup">
-        <action
-            android:id="@+id/action_startup_to_NFC"
-            app:destination="@id/NFC" />
-    </fragment>
-
-
-    <fragment
         android:id="@+id/dashboard"
         android:name="com.example.dungeonsanddragons.Dashboard"
         android:label="dashboard"
@@ -25,9 +14,6 @@
         <action
             android:id="@+id/action_dashboard_to_NFC"
             app:destination="@id/NFC" />
-        <action
-            android:id="@+id/action_dashboard_to_startup"
-            app:destination="@id/startup" />
     </fragment>
 
     <fragment
@@ -35,10 +21,9 @@
         android:name="com.example.dungeonsanddragons.NFC"
         android:label="nfc"
         tools:layout="@layout/nfc" />
-
-    <fragment
-        android:id="@+id/Login"
-        android:name="com.example.dungeonsanddragons.Login"
-        android:label="login"
-        tools:layout="@layout/login" />
+    <activity
+        android:id="@+id/startup"
+        android:name="com.example.dungeonsanddragons.Startup"
+        android:label="startup"
+        tools:layout="@layout/startup" />
 </navigation>

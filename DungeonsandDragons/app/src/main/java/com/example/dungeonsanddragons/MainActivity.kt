@@ -57,42 +57,40 @@ class MainActivity : AppCompatActivity() {
         // "10.0.2.2" is a special value which allows the Android emulator to
         // connect to "localhost" on the host computer. The port values are
         // defined in the firebase.json file.
-//        if (BuildConfig.DEBUG) {
-//        Firebase.database.useEmulator("10.0.2.2", 9000)
-//        Firebase.auth.useEmulator("10.0.2.2", 9099)
-//        Firebase.storage.useEmulator("10.0.2.2", 9199)
-//        }
+        if (BuildConfig.DEBUG) {
+            Firebase.database.useEmulator("10.0.2.2", 9000)
+            Firebase.auth.useEmulator("10.0.2.2", 9099)
+            Firebase.storage.useEmulator("10.0.2.2", 9199)
+        }
+
+        // Initialize Realtime Database
+        db = Firebase.database
+        val messagesRef = db.reference.child(MESSAGES_CHILD)
 
         // Check if user is signed in
         auth = FirebaseAuth.getInstance()
         val user = auth.currentUser
-        if (user == null) {
+        if (user != null) {
+            // Temporary sign out for testing
+//            auth.signOut()
+            // Check if the NFC adapter triggered the application launch
+            if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent?.action) {
+                intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMessages ->
+                    val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
+                    val messages = rawMessages.map { it as NdefMessage }
+                    val bundle = bundleOf(
+                        "rawMessages" to messages,
+                        "id" to tag?.id
+                    )
+                    navController.navigate(R.id.NFC, bundle)
+                }
+            }
+            // Signed in navigate to dashboard
+            navController.navigate(R.id.dashboard)
+        } else {
             // Not signed in, launch the Sign In activity
             startActivity(Intent(this, Startup::class.java))
-//            finish()
-//            return
-        } else {
-            Log.d("DEBUG", user.email!!)
-            navController.navigate(R.id.dashboard)
-//            auth.signOut()
         }
-
-        // Initialize Realtime Database
-//        db = Firebase.database
-//        val messagesRef = db.reference.child(MESSAGES_CHILD)
-
-        // Check if the NFC adapter triggered the application launch
-//        if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent?.action) {
-//            intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMessages ->
-//                val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
-//                val messages = rawMessages.map { it as NdefMessage }
-//                val bundle = bundleOf(
-//                    "rawMessages" to messages,
-//                    "id" to tag?.id
-//                )
-//                navController.navigate(R.id.action_startup_to_NFC, bundle)
-//            }
-//        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

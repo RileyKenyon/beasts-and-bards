@@ -1,13 +1,11 @@
 package com.example.dungeonsanddragons
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -35,22 +33,11 @@ class Dashboard : Fragment() {
         textView = binding.welcomeMessage
         val user = AuthUI.getInstance().auth.currentUser
         val username = user?.email.toString()
-        textView.text = getString(R.string.welcome_back,username)
-
-        // Add callback for button listener
-
+        textView.text = getString(R.string.welcome_back, username)
         binding.signoutButton.setOnClickListener(
-////            AuthUI.getInstance().signOut(user)
-//            startActivity(Intent(this, Startup::class.java))
-//            Navigation.createNavigateOnClickListener(R.id.action_dashboard_to_startup,
-//                bundleOf ("signout" to true)
-//            )
-//        )
+            Navigation.createNavigateOnClickListener(R.id.NFC)
+        )
     }
-//    override fun onClick(view: View): View.OnClickListener? {
-//        AuthUI.getInstance().signOut(requireContext())
-//    }
-
 
     override fun onDestroyView(){
         super.onDestroyView()

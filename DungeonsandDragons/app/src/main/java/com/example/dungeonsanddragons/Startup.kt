@@ -35,9 +35,6 @@ class Startup : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState!!.getBoolean("signout")) {
-            signOut()
-        }
         _binding = StartupBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
@@ -45,15 +42,12 @@ class Startup : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
 
-        // Check if user is signed in - launch Firebase UI
-        // Otherwise proceed to mainActivity
+        // Check if user is signed in - launch Firebase UI, otherwise proceed to mainActivity
         if (Firebase.auth.currentUser == null) {
-            // Sign in with the FirebaseUI
             createSignInIntent()
         } else {
             goToMainActivity()
         }
-
     }
 
     private fun goToMainActivity() {
