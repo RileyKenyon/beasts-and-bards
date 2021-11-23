@@ -7,16 +7,16 @@
 
     <activity
         android:id="@+id/startup"
-        android:name="com.example.dungeonsanddragons.Startup"
+        android:name="com.example.dungeonsanddragons.StartupFragment"
         android:label="Startup"
-        tools:layout="@layout/startup" />
+        tools:layout="@layout/fragment_startup" />
     <navigation android:id="@+id/navigation"
         app:startDestination="@id/dashboard">
         <fragment
             android:id="@+id/dashboard"
-            android:name="com.example.dungeonsanddragons.Dashboard"
+            android:name="com.example.dungeonsanddragons.DashboardFragment"
             android:label="Dashboard"
-            tools:layout="@layout/dashboard">
+            tools:layout="@layout/fragment_dashboard">
 
             <action
                 android:id="@+id/action_dashboard_to_NFC"

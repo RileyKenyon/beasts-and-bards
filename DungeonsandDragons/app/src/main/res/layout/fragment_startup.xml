@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@color/white"
-    tools:context=".Startup">
+    tools:context=".StartupFragment">
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/title_image"
             android:src="@drawable/d20"

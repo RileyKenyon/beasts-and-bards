@@ -28,7 +28,7 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
-        <activity android:name=".Startup"/>
+        <activity android:name=".StartupFragment"/>
 <!--        <activity android:name=".NFC">-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>-->
