@@ -2,43 +2,57 @@
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    tools:context=".MainActivity">
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/dark_red"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/ThemeOverlay.DungeonsAndDragons.DefaultSurface"
-                app:title="@string/app_name"
-                app:titleTextAppearance="@style/TextAppearance.DungeonsAndDragons.Toolbar"
-                />
+<!--        <com.google.android.material.appbar.AppBarLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
 
-        </com.google.android.material.appbar.AppBarLayout>
+<!--            <com.google.android.material.appbar.CollapsingToolbarLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:id="@+id/collapsing_toolbar_layout"-->
+<!--                app:contentScrim="?attr/colorPrimary"-->
+<!--                app:expandedTitleGravity="top"-->
+<!--                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">-->
 
-        <androidx.fragment.app.FragmentContainerView
+<!--                <androidx.appcompat.widget.Toolbar-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:id="@+id/toolbar"-->
+<!--                    app:layout_collapseMode="pin"/>-->
+
+<!--            </com.google.android.material.appbar.CollapsingToolbarLayout>-->
+
+<!--            <com.google.android.material.appbar.MaterialToolbar-->
+<!--                android:id="@+id/topAppBar"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:theme="@style/ThemeOverlay.DungeonsAndDragons.DefaultSurface"-->
+<!--                />-->
+
+<!--        </com.google.android.material.appbar.AppBarLayout>-->
+
+<!--        <androidx.fragment.app.FragmentContainerView-->
+        <fragment
             android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-
             app:defaultNavHost="true"
             app:navGraph="@navigation/nav_graph" />
 
@@ -46,9 +60,8 @@
     <!--    https://developer.android.com/guide/navigation/navigation-ui#add_a_navigation_drawer-->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"/>
+        app:menu="@menu/main_menu"/>
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -6,16 +6,15 @@ import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.*
 import com.example.dungeonsanddragons.databinding.ActivityMainBinding
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
@@ -45,15 +44,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
-        // Set Main view on launch and load D8 gif
         setContentView(binding.root)
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
         // Setup navigation and navigation app bar
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+
+        // Set up Action Bar
         navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration(navController.graph, binding.navigationDrawer)
-        findViewById<MaterialToolbar>(R.id.topAppBar).setupWithNavController(navController,appBarConfiguration)
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.dashboard, R.id.startup),binding.navigationDrawer)
+        setupActionBar(appBarConfiguration)
+
+        // Set up Navigation Menu
+        setupNavigationMenu(binding.navigationView)
+
+//        appBarConfiguration = AppBarConfiguration(navController.graph, binding.navigationDrawer)
+//        findViewById<NavigationView>(R.id.navigation_view).setupWithNavController(navController)
 
         // Check for debug mode of the firebase
         // "10.0.2.2" is a special value which allows the Android emulator to
@@ -100,12 +109,44 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        TODO("Not yet implemented")
+        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val retValue = super.onCreateOptionsMenu(menu)
+        val navigationView = findViewById<NavigationView>(R.id.navigation_view)
+        if (navigationView == null) {
+            menuInflater.inflate(R.menu.overflow_menu, menu)
+            return true
+        }
+        return retValue
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+    }
+
+    private fun setupActionBar(appBarConfig : AppBarConfiguration) {
+        setupActionBarWithNavController(navController, appBarConfig)
+    }
+
+    private fun setupNavigationMenu(navigationView: NavigationView) {
+        navigationView.setupWithNavController(navController)
+    }
+//    fun onGroupItemClick(item: MenuItem) {
+//        // One of the group items (using the onClick attribute) was clicked
+//        // The item parameter passed here indicates which item it is
+//        // All other menu item clicks are handled by <code><a href="/reference/android/app/Activity.html#onOptionsItemSelected(android.view.MenuItem)">onOptionsItemSelected()</a></code>
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        val navController = findNavController(R.id.nav_host_fragment)
+//        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+//    }
 
     companion object {
         private const val TAG = "MainActivity"
