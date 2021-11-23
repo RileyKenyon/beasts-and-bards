@@ -31,7 +31,7 @@ import com.google.firebase.storage.ktx.storage
  * Main Activity - entry point for the app
  * Uses Firebase Auth to get user id
  */
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity() {
 
     // Navigation instance variables
     private lateinit var navController: NavController
@@ -57,22 +57,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(setOf(R.id.dashboard, R.id.startup),binding.navigationDrawer)
         setupActionBar(appBarConfiguration)
-
-        // Set up Navigation Menu
         setupNavigationMenu(binding.navigationView)
-
-//        appBarConfiguration = AppBarConfiguration(navController.graph, binding.navigationDrawer)
-//        findViewById<NavigationView>(R.id.navigation_view).setupWithNavController(navController)
 
         // Check for debug mode of the firebase
         // "10.0.2.2" is a special value which allows the Android emulator to
         // connect to "localhost" on the host computer. The port values are
         // defined in the firebase.json file.
-//        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Firebase.database.useEmulator("10.0.2.2", 9000)
             Firebase.auth.useEmulator("10.0.2.2", 9099)
             Firebase.storage.useEmulator("10.0.2.2", 9199)
-//        }
+        }
 
         // Initialize Realtime Database
         db = Firebase.database
@@ -104,18 +99,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val retValue = super.onCreateOptionsMenu(menu)
         val navigationView = findViewById<NavigationView>(R.id.navigation_view)
@@ -127,26 +110,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Navigate to the destination specified by the menu item
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
     private fun setupActionBar(appBarConfig : AppBarConfiguration) {
+        // Update action bar automatically when destination changes
         setupActionBarWithNavController(navController, appBarConfig)
     }
 
     private fun setupNavigationMenu(navigationView: NavigationView) {
         navigationView.setupWithNavController(navController)
     }
-//    fun onGroupItemClick(item: MenuItem) {
-//        // One of the group items (using the onClick attribute) was clicked
-//        // The item parameter passed here indicates which item it is
-//        // All other menu item clicks are handled by <code><a href="/reference/android/app/Activity.html#onOptionsItemSelected(android.view.MenuItem)">onOptionsItemSelected()</a></code>
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        val navController = findNavController(R.id.nav_host_fragment)
-//        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
-//    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
 
     companion object {
         private const val TAG = "MainActivity"

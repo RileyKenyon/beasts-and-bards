@@ -3,27 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/dashboard">
+    app:startDestination="@id/navigation">
 
-    <fragment
-        android:id="@+id/dashboard"
-        android:name="com.example.dungeonsanddragons.Dashboard"
-        android:label="dashboard"
-        tools:layout="@layout/dashboard">
-
-        <action
-            android:id="@+id/action_dashboard_to_NFC"
-            app:destination="@id/NFC" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/NFC"
-        android:name="com.example.dungeonsanddragons.NFC"
-        android:label="nfc"
-        tools:layout="@layout/nfc" />
     <activity
         android:id="@+id/startup"
         android:name="com.example.dungeonsanddragons.Startup"
-        android:label="startup"
+        android:label="Startup"
         tools:layout="@layout/startup" />
+    <navigation android:id="@+id/navigation"
+        app:startDestination="@id/dashboard">
+        <fragment
+            android:id="@+id/dashboard"
+            android:name="com.example.dungeonsanddragons.Dashboard"
+            android:label="Dashboard"
+            tools:layout="@layout/dashboard">
+
+            <action
+                android:id="@+id/action_dashboard_to_NFC"
+                app:destination="@id/NFC" />
+        </fragment>
+        <fragment
+            android:id="@+id/NFC"
+            android:name="com.example.dungeonsanddragons.NFC"
+            android:label="NFC"
+            tools:layout="@layout/nfc" />
+    </navigation>
 </navigation>
