@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:id="@+id/primary">
+<!--        For these items, refer to the other fragment ids to navigate to them-->
         <item
-            android:id="@+id/signout"
+            android:id="@id/NFC"
+            android:icon="@drawable/fui_ic_check_circle_black_128dp"
             android:title="@string/sign_out"/>
         <item
             android:id="@+id/dummy_text"
