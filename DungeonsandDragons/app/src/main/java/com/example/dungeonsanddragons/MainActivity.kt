@@ -6,6 +6,7 @@ import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
@@ -19,6 +20,7 @@ import com.example.dungeonsanddragons.databinding.ActivityMainBinding
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
@@ -30,7 +32,7 @@ import com.google.firebase.storage.ktx.storage
  * Main Activity - entry point for the app
  * Uses Firebase Auth to get user id
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     // Navigation instance variables
     private lateinit var navController: NavController
@@ -50,18 +52,18 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration(navController.graph)
+        appBarConfiguration = AppBarConfiguration(navController.graph, binding.navigationDrawer)
         findViewById<MaterialToolbar>(R.id.topAppBar).setupWithNavController(navController,appBarConfiguration)
 
         // Check for debug mode of the firebase
         // "10.0.2.2" is a special value which allows the Android emulator to
         // connect to "localhost" on the host computer. The port values are
         // defined in the firebase.json file.
-        if (BuildConfig.DEBUG) {
+//        if (BuildConfig.DEBUG) {
             Firebase.database.useEmulator("10.0.2.2", 9000)
             Firebase.auth.useEmulator("10.0.2.2", 9099)
             Firebase.storage.useEmulator("10.0.2.2", 9199)
-        }
+//        }
 
         // Initialize Realtime Database
         db = Firebase.database
@@ -73,19 +75,19 @@ class MainActivity : AppCompatActivity() {
         if (user != null) {
             // Temporary sign out for testing
 //            auth.signOut()
-            // Check if the NFC adapter triggered the application launch
-            if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent?.action) {
-                intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMessages ->
-                    val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
-                    val messages = rawMessages.map { it as NdefMessage }
-                    val bundle = bundleOf(
-                        "rawMessages" to messages,
-                        "id" to tag?.id
-                    )
-                    navController.navigate(R.id.NFC, bundle)
-                }
-            }
-            // Signed in navigate to dashboard
+//            // Check if the NFC adapter triggered the application launch
+//            if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent?.action) {
+//                intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)?.also { rawMessages ->
+//                    val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
+//                    val messages = rawMessages.map { it as NdefMessage }
+//                    val bundle = bundleOf(
+//                        "rawMessages" to messages,
+//                        "id" to tag?.id
+//                    )
+//                    navController.navigate(R.id.NFC, bundle)
+//                }
+//            }
+//            // Signed in navigate to dashboard
             navController.navigate(R.id.dashboard)
         } else {
             // Not signed in, launch the Sign In activity
@@ -95,6 +97,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 
     companion object {
