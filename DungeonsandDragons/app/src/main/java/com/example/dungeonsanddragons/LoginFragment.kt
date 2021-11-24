@@ -50,7 +50,7 @@ class LoginFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
-        binding.authButton.setOnClickListener {launchSignInFlow()}
+//        binding.authButton.setOnClickListener {launchSignInFlow()}
         return binding.root
     }
 

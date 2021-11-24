@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:stretchColumns="1"
-    tools:context=".NFC"
+    tools:context=".NfcFragment"
     android:background="@color/white"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"

@@ -15,5 +15,4 @@ class LoginViewModel : ViewModel() {
     }
 
     val firebaseUserData = FirebaseUserLiveData()
-    }
 }

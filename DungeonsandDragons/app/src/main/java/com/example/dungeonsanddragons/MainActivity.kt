@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
         // Set up Action Bar
         navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration(setOf(R.id.dashboard, R.id.startup),binding.navigationDrawer)
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.dashboardFragment, R.id.nfcFragment),binding.navigationDrawer)
         setupActionBar(appBarConfiguration)
         setupNavigationMenu(binding.navigationView)
 

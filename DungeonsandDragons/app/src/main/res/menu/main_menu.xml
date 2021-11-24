@@ -3,7 +3,7 @@
     <group android:id="@+id/primary">
 <!--        For these items, refer to the other fragment ids to navigate to them-->
         <item
-            android:id="@id/NFC"
+            android:id="@id/nfcFragment"
             android:icon="@drawable/fui_ic_check_circle_black_128dp"
             android:title="@string/sign_out"/>
         <item
