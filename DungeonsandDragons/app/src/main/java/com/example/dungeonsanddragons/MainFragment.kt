@@ -21,7 +21,6 @@ import com.google.firebase.auth.FirebaseAuth
 class MainFragment : Fragment() {
     companion object {
         const val TAG = "MainFragment"
-        const val SIGN_IN_RESULT_CODE = 1001
     }
 
     // Get a reference to the ViewModel scoped to this fragment
@@ -51,13 +50,11 @@ class MainFragment : Fragment() {
 
     private fun observeAuthenticationState() {
         viewModel.firebaseUserData.observe(viewLifecycleOwner, Observer { user ->
-            if (user == null) {
-                // Launch SignInFLow
-                launchSignInFlow()
-            } else {
+            if (user != null) {
                 val navController = findNavController()
                 navController.navigate(R.id.dashboardFragment)
-                // TODO: Navigate to the dashboard if logged in
+            } else {
+                launchSignInFlow()
             }
         })
     }

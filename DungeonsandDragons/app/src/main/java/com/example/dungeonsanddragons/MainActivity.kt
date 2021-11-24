@@ -1,17 +1,16 @@
 package com.example.dungeonsanddragons
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.example.dungeonsanddragons.databinding.ActivityMainBinding
+import com.firebase.ui.auth.AuthUI
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -22,7 +21,6 @@ import com.google.firebase.storage.ktx.storage
 
 /**
  * Main Activity - entry point for the app
- * Uses Firebase Auth to get user id
  */
 class MainActivity : AppCompatActivity() {
 
@@ -100,5 +98,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    public fun signOut(menuItem: MenuItem) {
+        Log.d(TAG,menuItem.itemId.toString())
+        AuthUI.getInstance()
+            .signOut(this)
+            .addOnCompleteListener{
+                Log.d(StartupFragment.TAG,"Signed out successfully")
+            }
+        navController.navigate(R.id.mainFragment)
     }
 }
