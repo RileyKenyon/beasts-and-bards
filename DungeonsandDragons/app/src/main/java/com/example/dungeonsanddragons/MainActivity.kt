@@ -53,6 +53,8 @@ class MainActivity : AppCompatActivity() {
 
         // Set up Action Bar
         navController = navHostFragment.navController
+
+        // Set of specifies the top level destinations
         appBarConfiguration = AppBarConfiguration(setOf(R.id.dashboardFragment, R.id.nfcFragment),binding.navigationDrawer)
         setupActionBar(appBarConfiguration)
         setupNavigationMenu(binding.navigationView)
@@ -61,11 +63,11 @@ class MainActivity : AppCompatActivity() {
         // "10.0.2.2" is a special value which allows the Android emulator to
         // connect to "localhost" on the host computer. The port values are
         // defined in the firebase.json file.
-        if (BuildConfig.DEBUG) {
+//        if (BuildConfig.DEBUG) {
             Firebase.database.useEmulator("10.0.2.2", 9000)
             Firebase.auth.useEmulator("10.0.2.2", 9099)
             Firebase.storage.useEmulator("10.0.2.2", 9199)
-        }
+//        }
 
         // Initialize Realtime Database
         db = Firebase.database
@@ -105,7 +107,7 @@ class MainActivity : AppCompatActivity() {
         AuthUI.getInstance()
             .signOut(this)
             .addOnCompleteListener{
-                Log.d(StartupFragment.TAG,"Signed out successfully")
+                Log.d(TAG,"Signed out successfully")
             }
         navController.navigate(R.id.mainFragment)
     }

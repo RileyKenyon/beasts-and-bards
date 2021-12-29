@@ -87,14 +87,14 @@ class MainFragment : Fragment() {
         val response = result.idpResponse
         if (result.resultCode == Activity.RESULT_OK) {
             // successfully signed in
-            Log.d(StartupFragment.TAG, "Sign in successful")
+            Log.d(TAG, "Sign in successful")
             var user = FirebaseAuth.getInstance().currentUser
         } else {
             val response = result.idpResponse
             if (response == null) {
-                Log.w(StartupFragment.TAG, "Sign in canceled")
+                Log.w(TAG, "Sign in canceled")
             } else {
-                Log.w(StartupFragment.TAG, "Sign in error", response.error)
+                Log.w(TAG, "Sign in error", response.error)
             }
         }
     }
@@ -103,7 +103,7 @@ class MainFragment : Fragment() {
         AuthUI.getInstance()
             .signOut(requireContext())
             .addOnCompleteListener{
-                Log.d(StartupFragment.TAG,"Signed out successfully")
+                Log.d(TAG,"Signed out successfully")
             }
     }
 }

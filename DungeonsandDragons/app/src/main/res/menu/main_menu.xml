@@ -11,4 +11,6 @@
             android:id="@+id/dummy_text"
             android:title="@string/dummy_text"/>
     </group>
+    <item android:id="@+id/action_settings"
+        android:title="settings"/>
 </menu>

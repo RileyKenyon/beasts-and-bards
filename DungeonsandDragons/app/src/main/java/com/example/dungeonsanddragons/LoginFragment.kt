@@ -39,7 +39,6 @@ class LoginFragment : Fragment() {
     }
 
     private var _binding: FragmentLoginBinding? = null
-    private lateinit var textView: TextView
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -93,15 +92,15 @@ class LoginFragment : Fragment() {
         val response = result.idpResponse
         if (result.resultCode == Activity.RESULT_OK) {
             // successfully signed in
-            Log.d(StartupFragment.TAG,"Sign in successful")
+            Log.d(TAG,"Sign in successful")
             var user = FirebaseAuth.getInstance().currentUser
 //            goToMainActivity()
         } else {
             val response = result.idpResponse
             if (response == null) {
-                Log.w(StartupFragment.TAG, "Sign in canceled")
+                Log.w(TAG, "Sign in canceled")
             } else {
-                Log.w(StartupFragment.TAG, "Sign in error", response.error)
+                Log.w(TAG, "Sign in error", response.error)
             }
         }
     }
