@@ -11,4 +11,5 @@
     <string name="sign_out">sign out</string>
     <string name="dummy_text">dummy text</string>
     <string name="settings">settings</string>
+    <string name="fab_content_description">fab</string>
 </resources>
