@@ -1,8 +1,5 @@
 package com.example.dungeonsanddragons
 
-import android.app.Activity
-import android.app.Service
-import android.content.Intent
 import android.nfc.NdefMessage
 import android.nfc.NdefRecord
 import android.nfc.NdefRecord.*
@@ -10,25 +7,22 @@ import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.Ndef
 import android.os.Bundle
-import android.provider.Settings
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.dungeonsanddragons.databinding.NfcBinding
-import androidx.fragment.app.FragmentActivity
+import com.example.dungeonsanddragons.databinding.FragmentNfcBinding
 
 
 // Helper functions and variables
 private const val TAG = "NFC"
 fun ByteArray.toHexString() = joinToString("") { "%02x".format(it) }
 
-class NFC : Fragment(){
+class NfcFragment : Fragment(){
     // Initialization and binding
-    private var _binding: NfcBinding? = null
+    private var _binding: FragmentNfcBinding? = null
     private lateinit var idTextView: TextView
     private lateinit var payloadTextView: TextView
 
@@ -51,7 +45,7 @@ class NFC : Fragment(){
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = NfcBinding.inflate(inflater, container, false)
+        _binding = FragmentNfcBinding.inflate(inflater, container, false)
         return binding.root
     }
 

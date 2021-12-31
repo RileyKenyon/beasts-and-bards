@@ -16,6 +16,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.dungeonsanddragons"
+        multiDexEnabled true
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1

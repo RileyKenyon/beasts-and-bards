@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/primary">
+<!--        For these items, refer to the other fragment ids to navigate to them-->
+        <item
+            android:id="@+id/sign_out"
+            android:icon="@drawable/fui_ic_check_circle_black_128dp"
+            android:title="@string/sign_out"
+            android:onClick="signOut"/>
+        <item
+            android:id="@+id/dummy_text"
+            android:title="@string/dummy_text"/>
+    </group>
+    <item android:id="@+id/action_settings"
+        android:title="settings"/>
+</menu>
