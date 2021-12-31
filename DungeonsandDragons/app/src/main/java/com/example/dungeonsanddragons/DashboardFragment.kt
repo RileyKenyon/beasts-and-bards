@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.dungeonsanddragons.databinding.FragmentDashboardBinding
 import com.firebase.ui.auth.AuthUI
+import com.google.firebase.auth.FirebaseAuth
 
 class DashboardFragment : Fragment() {
     private var _binding: FragmentDashboardBinding? = null
@@ -29,7 +30,7 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         textView = binding.welcomeMessage
         // TODO: Replace this with the observer pattern
-        val user = AuthUI.getInstance().auth.currentUser
+        val user = FirebaseAuth.getInstance().currentUser
         val username = user?.email.toString()
         textView.text = getString(R.string.welcome_back, username)
 //        binding.signoutButton.setOnClickListener(

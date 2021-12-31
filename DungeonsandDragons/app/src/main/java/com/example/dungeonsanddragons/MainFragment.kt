@@ -9,15 +9,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.dungeonsanddragons.databinding.FragmentMainBinding
 import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
-import com.google.firebase.auth.FirebaseAuth
 
+/**
+ * Main Fragment to handle authentication - monitor the live userdata
+ * If user signs out, re-launch the Firebase UI
+ */
 class MainFragment : Fragment() {
     companion object {
         const val TAG = "MainFragment"
@@ -34,7 +36,6 @@ class MainFragment : Fragment() {
     ) { res ->
         this.onSignInResult(res)
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -45,15 +46,19 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Monitor user authentication
         observeAuthenticationState()
     }
 
     private fun observeAuthenticationState() {
         viewModel.firebaseUserData.observe(viewLifecycleOwner, Observer { user ->
+            val navController = findNavController()
             if (user != null) {
-                val navController = findNavController()
+                Log.d(TAG, user.toString())
                 navController.navigate(R.id.dashboardFragment)
             } else {
+                Log.d(TAG, "null user")
                 launchSignInFlow()
             }
         })
@@ -87,23 +92,14 @@ class MainFragment : Fragment() {
         val response = result.idpResponse
         if (result.resultCode == Activity.RESULT_OK) {
             // successfully signed in
-            Log.d(TAG, "Sign in successful")
-            var user = FirebaseAuth.getInstance().currentUser
+            Log.d(MainFragment.TAG, "Sign in successful")
         } else {
             val response = result.idpResponse
             if (response == null) {
-                Log.w(TAG, "Sign in canceled")
+                Log.w(MainFragment.TAG, "Sign in canceled")
             } else {
-                Log.w(TAG, "Sign in error", response.error)
+                Log.w(MainFragment.TAG, "Sign in error", response.error)
             }
         }
-    }
-
-    private fun signOut() {
-        AuthUI.getInstance()
-            .signOut(requireContext())
-            .addOnCompleteListener{
-                Log.d(TAG,"Signed out successfully")
-            }
     }
 }

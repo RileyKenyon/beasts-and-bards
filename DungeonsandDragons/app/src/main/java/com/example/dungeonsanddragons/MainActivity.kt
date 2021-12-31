@@ -1,5 +1,6 @@
 package com.example.dungeonsanddragons
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -29,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     // Firebase instance variables
-    private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseDatabase
 
     companion object {
@@ -63,11 +63,11 @@ class MainActivity : AppCompatActivity() {
         // "10.0.2.2" is a special value which allows the Android emulator to
         // connect to "localhost" on the host computer. The port values are
         // defined in the firebase.json file.
-//        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Firebase.database.useEmulator("10.0.2.2", 9000)
             Firebase.auth.useEmulator("10.0.2.2", 9099)
             Firebase.storage.useEmulator("10.0.2.2", 9199)
-//        }
+        }
 
         // Initialize Realtime Database
         db = Firebase.database
@@ -77,11 +77,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val retValue = super.onCreateOptionsMenu(menu)
         val navigationView = findViewById<NavigationView>(R.id.navigation_view)
-        if (navigationView == null) {
-            menuInflater.inflate(R.menu.overflow_menu, menu)
-            return true
-        }
+//        if (navigationView != null) {
+//            menuInflater.inflate(R.menu.overflow_menu, menu)
+//            return true
+//        }
         return retValue
+//        menuInflater.inflate(R.menu.overflow_menu, menu)
+//        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -102,13 +104,13 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    public fun signOut(menuItem: MenuItem) {
-        Log.d(TAG,menuItem.itemId.toString())
+    fun signOut(menuItem: MenuItem) {
+        Log.d(TAG,FirebaseAuth.getInstance().currentUser.toString())
         AuthUI.getInstance()
             .signOut(this)
             .addOnCompleteListener{
                 Log.d(TAG,"Signed out successfully")
+                navController.navigate(R.id.mainFragment)
             }
-        navController.navigate(R.id.mainFragment)
     }
 }
