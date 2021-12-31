@@ -12,4 +12,5 @@
     <string name="dummy_text">dummy text</string>
     <string name="settings">settings</string>
     <string name="fab_content_description">fab</string>
+    <string name="game0_name">Default Game</string>
 </resources>

@@ -1,9 +1,21 @@
 package com.example.dungeonsanddragons.dashboard.data
 
+import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
-class GameSource {
+class GameSource(resources: Resources) {
+
+    companion object {
+        private var INSTANCE: GameSource? = null
+        fun getGameSource(resources: Resources) : GameSource {
+            return synchronized(GameSource::class){
+                val newInstance = INSTANCE ?: GameSource(resources)
+                INSTANCE = newInstance
+                newInstance
+            }
+        }
+    }
     private val initialGameList = gameList()
     private val gameLiveData = MutableLiveData(initialGameList)
 
