@@ -6,7 +6,7 @@
     app:startDestination="@id/mainFragment">
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.example.dungeonsanddragons.DashboardFragment"
+        android:name="com.example.dungeonsanddragons.dashboard.DashboardFragment"
         android:label="DashboardFragment" />
     <fragment
         android:id="@+id/nfcFragment"

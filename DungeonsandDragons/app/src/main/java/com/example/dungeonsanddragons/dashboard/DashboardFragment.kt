@@ -1,4 +1,4 @@
-package com.example.dungeonsanddragons
+package com.example.dungeonsanddragons.dashboard
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.example.dungeonsanddragons.R
 import com.example.dungeonsanddragons.databinding.FragmentDashboardBinding
-import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 
 class DashboardFragment : Fragment() {
