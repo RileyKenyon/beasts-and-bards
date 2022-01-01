@@ -32,6 +32,42 @@ fun gameList() : List<Game> {
             name = "Dun-Runners",
             participants = playerList(),
             active = true
+        ),
+        Game(
+            id = 4,
+            name = "Knights Templar",
+            participants = playerList(),
+            active = true
+        ),
+        Game(
+            id = 5,
+            name = "Bowling for Soup",
+            participants = playerList(),
+            active = true
+        ),
+        Game(
+            id = 6,
+            name = "Sno white and 7 Dwarfs",
+            participants = playerList(),
+            active = true
+        ),
+        Game(
+            id = 7,
+            name = "Backstreet Boyz",
+            participants = playerList(),
+            active = true
+        ),
+        Game(
+            id = 8,
+            name = "Fish",
+            participants = playerList(),
+            active = true
+        ),
+        Game(
+            id = 9,
+            name = "Beasts and Bards",
+            participants = playerList(),
+            active = true
         )
     )
 }
