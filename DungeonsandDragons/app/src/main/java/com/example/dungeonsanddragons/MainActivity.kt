@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -75,15 +76,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val retValue = super.onCreateOptionsMenu(menu)
-        val navigationView = findViewById<NavigationView>(R.id.navigation_view)
+        super.onCreateOptionsMenu(menu)
+//        val navigationView = findViewById<NavigationView>(R.id.navigation_view)
 //        if (navigationView != null) {
 //            menuInflater.inflate(R.menu.overflow_menu, menu)
 //            return true
 //        }
-        return retValue
-//        menuInflater.inflate(R.menu.overflow_menu, menu)
-//        return true
+//        return retValue
+        menuInflater.inflate(R.menu.overflow_menu, menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
