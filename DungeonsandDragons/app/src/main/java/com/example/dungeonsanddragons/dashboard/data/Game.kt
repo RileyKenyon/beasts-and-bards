@@ -19,7 +19,7 @@ fun gameList() : List<Game> {
             id = 1,
             name = "Special K",
             participants = playerList(),
-            active = true
+            active = false
         ),
         Game(
             id = 2,
@@ -31,19 +31,19 @@ fun gameList() : List<Game> {
             id = 3,
             name = "Dun-Runners",
             participants = playerList(),
-            active = true
+            active = false
         ),
         Game(
             id = 4,
             name = "Knights Templar",
             participants = playerList(),
-            active = true
+            active = false
         ),
         Game(
             id = 5,
             name = "Bowling for Soup",
             participants = playerList(),
-            active = true
+            active = false
         ),
         Game(
             id = 6,

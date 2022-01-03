@@ -16,7 +16,8 @@ class GameSource(resources: Resources) {
             }
         }
     }
-    private val initialGameList = gameList()
+    // sorting of initial data by active games
+    private val initialGameList = gameList().sortedBy {it.name}.sortedBy { !it.active }
     private val gameLiveData = MutableLiveData(initialGameList)
 
     fun addGame(game: Game) {
@@ -28,6 +29,9 @@ class GameSource(resources: Resources) {
             // Add passed-in game to top of list
             val updatedList = currentList.toMutableList()
             updatedList.add(0,game)
+            // sort list by active status
+            updatedList.sortBy { it.name }
+            updatedList.sortBy { it.active }
             gameLiveData.postValue(updatedList)
         }
     }
