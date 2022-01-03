@@ -51,7 +51,7 @@ class DashboardFragment : Fragment() {
         usernameTextView = binding.welcomeMessage
         // TODO: Replace this with the observer pattern
         val user = FirebaseAuth.getInstance().currentUser
-        val username = user?.email.toString()
+        val username = user?.displayName.toString()
         usernameTextView.text = getString(R.string.welcome_back, username)
 
         // Game Recycler View
