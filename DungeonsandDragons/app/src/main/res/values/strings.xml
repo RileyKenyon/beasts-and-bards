@@ -7,8 +7,10 @@
     <string name="nfc_data_text">Scan Tag to get data</string>
     <string name="google_sign_in">Sign in with Google</string>
     <string name="email_sign_in">Sign in with Email</string>
-    <string name="welcome_back">Welcome Back <b>%1$s!</b></string>
+    <string name="welcome_back">Welcome Back,\n<b>%1$s!</b></string>
     <string name="sign_out">sign out</string>
     <string name="dummy_text">dummy text</string>
     <string name="settings">settings</string>
+    <string name="fab_content_description">fab</string>
+    <string name="game0_name">Default Game</string>
 </resources>

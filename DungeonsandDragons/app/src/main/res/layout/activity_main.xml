@@ -16,9 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/dark_red"
-            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
+            android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"/>
 
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
@@ -33,5 +33,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/main_menu"/>
+        app:menu="@menu/main_menu"
+        app:headerLayout="@layout/nav_header"/>
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -6,16 +6,18 @@
     app:startDestination="@id/mainFragment">
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.example.dungeonsanddragons.DashboardFragment"
-        android:label="DashboardFragment" />
+        android:name="com.example.dungeonsanddragons.dashboard.DashboardFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_dashboard"/>
     <fragment
         android:id="@+id/nfcFragment"
         android:name="com.example.dungeonsanddragons.NfcFragment"
-        android:label="NfcFragment" />
+        android:label="NfcFragment"
+        tools:layout="@layout/fragment_nfc"/>
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.dungeonsanddragons.MainFragment"
-        android:label="fragment_main"
+        android:label="main"
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_dashboardFragment"
