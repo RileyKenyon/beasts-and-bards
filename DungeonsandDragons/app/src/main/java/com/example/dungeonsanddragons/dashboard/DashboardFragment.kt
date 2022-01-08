@@ -86,6 +86,7 @@ class DashboardFragment : Fragment() {
 
     private fun fabOnClick(){
         // Navigate to gameCreator
+        navController.navigate(R.id.createGameFragment)
         // Could also start activity for result
     }
 }
