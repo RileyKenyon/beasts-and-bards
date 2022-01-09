@@ -30,7 +30,7 @@
     <fragment
         android:id="@+id/createGameFragment"
         android:name="com.example.dungeonsanddragons.dashboard.CreateGameFragment"
-        android:label="fragment_create_game"
+        android:label="Start A New Adventure"
         tools:layout="@layout/fragment_create_game" >
         <action
             android:id="@+id/action_createGameFragment_to_dashboardFragment"

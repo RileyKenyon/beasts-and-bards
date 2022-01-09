@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialiconsoutlined/videogame_asset/outline_videogame_asset_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/circle_notifications/baseline_circle_notifications_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -33,8 +33,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="b30000" />
-                            <entry key="outputName" value="ic_outline_videogame_asset_100" />
+                            <entry key="outputName" value="ic_baseline_circle_notifications_24" />
                             <entry key="sourceFile" value="C:\Users\riley\repos\dnd-web\DungeonsandDragons" />
                           </map>
                         </option>
