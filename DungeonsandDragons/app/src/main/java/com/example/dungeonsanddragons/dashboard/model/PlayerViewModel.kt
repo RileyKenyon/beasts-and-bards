@@ -1,15 +1,18 @@
 package com.example.dungeonsanddragons.dashboard.model
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import android.util.Log
+import android.widget.Filter
+import androidx.lifecycle.*
 import com.example.dungeonsanddragons.dashboard.data.Player
 import com.example.dungeonsanddragons.dashboard.data.PlayerSource
+import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 import kotlin.random.Random
 
 class PlayerListViewModel (val dataSource: PlayerSource) : ViewModel() {
-    val playerLiveData = dataSource.getPlayerList()
+    var playerLiveData = dataSource.getPlayerList()
+//    var _playerLiveData = MutableLiveData<List<Player>>(dataSource.getPlayerList().value)
 
     // check if data is present
     fun insertPlayer(playerName: String?) {
@@ -23,6 +26,31 @@ class PlayerListViewModel (val dataSource: PlayerSource) : ViewModel() {
             name = playerName
         )
         dataSource.addPlayer(newPlayer)
+    }
+
+//    fun getFilteredPlayerList(filter: Filter) {
+//        return performFiltering() playerLiveData
+//    }
+//    init {
+//        viewModelScope.launch {
+//            filter.collect { newFilter ->
+//                savedStateHandle.set(newFilter)
+//
+//            }
+//        }
+//    }
+
+    fun updateFilter(s: CharSequence){
+        playerLiveData = Transformations.switchMap(playerLiveData){
+            val filteredPlayerList = MutableLiveData<List<Player>>()
+            filteredPlayerList.value = it?.filter { player ->
+                player.name.startsWith(s)
+            }
+            filteredPlayerList
+        }
+        playerLiveData.value?.forEach { player ->
+            Log.d("PLAYERVIEWMODEL",player.name.toString())
+        }
     }
 }
 

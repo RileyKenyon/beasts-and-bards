@@ -1,15 +1,18 @@
 package com.example.dungeonsanddragons.dashboard
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dungeonsanddragons.R
 import com.example.dungeonsanddragons.dashboard.data.Player
 import com.example.dungeonsanddragons.dashboard.model.PlayerAdapter
 import com.example.dungeonsanddragons.dashboard.model.PlayerListViewModel
@@ -62,6 +65,7 @@ class CreateGameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 //        super.onViewCreated(view, savedInstanceState)
+
         // Player recycler view
         val playerAdapter = PlayerAdapter{player -> adapterOnClick(player)}
         val recyclerView: RecyclerView = binding.playerRecyclerView
@@ -72,7 +76,22 @@ class CreateGameFragment : Fragment() {
             it?.let {
                 playerAdapter.submitList(it as MutableList<Player>)
             }
+
+            // Player filter
+            binding.playerFilter.addTextChangedListener(object: TextWatcher {
+                override fun afterTextChanged(s: Editable) {}
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    Log.d(TAG,"Player Text Changed")
+                    Log.d(TAG,binding.playerFilter.text.toString())
+                    // update filter
+                    playerListViewModel.updateFilter(binding.playerFilter.text.toString())
+//                    playerAdapter.notifyDataSetChanged()
+                }
+            })
+
         })
+
 
     }
 
@@ -82,7 +101,8 @@ class CreateGameFragment : Fragment() {
     }
 
     private fun adapterOnClick(player: Player) {
-
+        // TODO: add player to the new game list
+//        playerListViewModel.dataSource.addPlayer(player)
     }
 
     companion object {

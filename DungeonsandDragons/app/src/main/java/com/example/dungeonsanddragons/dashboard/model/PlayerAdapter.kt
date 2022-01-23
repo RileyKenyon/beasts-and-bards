@@ -3,6 +3,8 @@ package com.example.dungeonsanddragons.dashboard.model
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +12,14 @@ import com.example.dungeonsanddragons.R
 import com.example.dungeonsanddragons.dashboard.data.Player
 
 class PlayerAdapter (private val onCLick: (Player) -> Unit):
-    androidx.recyclerview.widget.ListAdapter<Player, PlayerAdapter.PlayerViewHolder>(PlayerDiffCallback) {
+    androidx.recyclerview.widget.ListAdapter<Player, PlayerAdapter.PlayerViewHolder>(PlayerDiffCallback), Filterable {
+
+
+//    private fun searchFilter() : Filter {
+//
+//        return filteredList
+//    }
+
 
     class PlayerViewHolder(itemView: View, val onCLick: (Player) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
@@ -40,6 +49,15 @@ class PlayerAdapter (private val onCLick: (Player) -> Unit):
     override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
         val player = getItem(position)
         holder.bind(player)
+    }
+
+    override fun submitList(list: MutableList<Player>?) {
+        super.submitList(list)
+    }
+
+    override fun getFilter(): Filter {
+        TODO("Not yet implemented")
+
     }
 }
 

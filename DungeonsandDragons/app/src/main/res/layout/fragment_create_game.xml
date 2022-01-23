@@ -9,15 +9,13 @@
     android:layout_marginEnd="@dimen/default_margin"
     tools:context=".dashboard.CreateGameFragment">
 
-    <EditText
-        android:id="@+id/autoCompleteNames"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/player_filter"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fontFamily="@font/iceberg"
         android:hint="Names"
         android:minHeight="48dp"
         android:padding="@dimen/vertical_padding"
-        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/playerGenericText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
