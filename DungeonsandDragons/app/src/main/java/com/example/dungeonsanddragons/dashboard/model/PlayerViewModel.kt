@@ -68,7 +68,7 @@ class PlayerListViewModel (val dataSource: PlayerSource) : ViewModel() {
 
     fun updateFilter(s: CharSequence){
         _playerLiveData.value = fullPlayerList.value?.filter { player ->
-            player.name.startsWith(s)
+            player.name.lowercase().startsWith(s.toString().lowercase())
         }
     }
 }

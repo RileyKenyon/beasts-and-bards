@@ -37,6 +37,8 @@ class GameAdapter (private val onClick: (Game) -> Unit) :
             // Set the game status icon if active
             if (currentGame?.active == true) {
                 gameStatusImageView.setImageResource(R.drawable.ic_green_baseline_check_circle_outline_24)
+            } else {
+                gameStatusImageView.setImageResource(R.drawable.ic_red_baseline_not_interested_24)
             }
         }
 

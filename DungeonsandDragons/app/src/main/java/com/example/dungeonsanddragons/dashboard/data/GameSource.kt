@@ -31,7 +31,7 @@ class GameSource(resources: Resources) {
             updatedList.add(0,game)
             // sort list by active status
             updatedList.sortBy { it.name }
-            updatedList.sortBy { it.active }
+            updatedList.sortByDescending { it.active }
             gameLiveData.postValue(updatedList)
         }
     }

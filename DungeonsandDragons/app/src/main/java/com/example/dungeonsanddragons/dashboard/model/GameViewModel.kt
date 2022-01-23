@@ -18,12 +18,6 @@ class GameListViewModel (val dataSource: GameSource): ViewModel() {
         if (newGame == null) {
             return
         }
-//        val newGame = Game(
-//            Random.nextLong(),
-//            gameName,
-//            playerList(),
-//            active = true
-//        )
         dataSource.addGame(newGame)
     }
 }
