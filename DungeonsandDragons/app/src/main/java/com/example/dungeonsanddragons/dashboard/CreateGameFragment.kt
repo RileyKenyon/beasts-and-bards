@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -39,6 +40,12 @@ class CreateGameFragment : Fragment() {
     // View model setup for recycler view
     private val playerListViewModel by viewModels<PlayerListViewModel> {
         PlayerListViewModelFactory(context)
+    }
+
+    // View model for gameList
+//    private val gameListViewModel: GameListViewModel by activityViewModels()
+    private val gameListViewModel by viewModels<GameListViewModel> {
+        GameListViewModelFactory(context)
     }
 
     // Navigation
@@ -126,7 +133,7 @@ class CreateGameFragment : Fragment() {
 
                 // Add game to game list
 //                val gameSource = GameSource(requireParentFragment().resources)
-//                gameSource.addGame(newGame)
+                gameListViewModel.insertGame(newGame)
 
                 // Navigate back to dashboard
                 navController.navigate(R.id.dashboardFragment)
