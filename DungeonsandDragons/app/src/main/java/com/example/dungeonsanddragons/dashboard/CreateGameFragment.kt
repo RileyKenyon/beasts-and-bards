@@ -1,5 +1,6 @@
 package com.example.dungeonsanddragons.dashboard
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,10 +9,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dungeonsanddragons.R
+import com.example.dungeonsanddragons.dashboard.data.Game
+import com.example.dungeonsanddragons.dashboard.data.GameSource
 import com.example.dungeonsanddragons.dashboard.data.Player
 import com.example.dungeonsanddragons.dashboard.model.*
 import com.example.dungeonsanddragons.databinding.FragmentCreateGameBinding
@@ -99,6 +104,35 @@ class CreateGameFragment : Fragment() {
                 groupAdapter.submitList(it as MutableList<Player>)
             }
         })
+
+        // Add on-click listener for submit button
+        val button = binding.submit
+        button.setOnClickListener {
+            // TODO: Move this logic to a different view model
+            // Check if partyTitle or player list is empty
+            val partyTitle = binding.groupNameText.text
+            val playerList = playerListViewModel.newPlayerLiveData.value
+            if (partyTitle == null || playerList == null)
+            {
+                Log.d(TAG,"Empty - try again")
+            } else {
+                // Create new game
+                val newGame = Game(
+                    id = Random.nextLong(),
+                    name = partyTitle.toString(),
+                    participants = playerList,
+                    active = false
+                )
+
+                // Add game to game list
+//                val gameSource = GameSource(requireParentFragment().resources)
+//                gameSource.addGame(newGame)
+
+                // Navigate back to dashboard
+                navController.navigate(R.id.dashboardFragment)
+            }
+        }
+
     }
 
     override fun onDestroyView(){

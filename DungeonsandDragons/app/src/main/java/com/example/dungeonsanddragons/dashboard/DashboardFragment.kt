@@ -21,10 +21,15 @@ import com.example.dungeonsanddragons.dashboard.model.HeaderAdapter
 import com.example.dungeonsanddragons.databinding.FragmentDashboardBinding
 import com.google.firebase.auth.FirebaseAuth
 
+private const val ARG_PARAM1 = "game"
+
 class DashboardFragment : Fragment() {
     private var _binding: FragmentDashboardBinding? = null
     private lateinit var usernameTextView: TextView
     private val binding get() = _binding!!
+
+    // Setup for passed in newgame
+    private var newGame: Game? = null
 
     // View model setup for recycler view
     private val gameListViewModel by viewModels<GameListViewModel> {
@@ -36,6 +41,10 @@ class DashboardFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        arguments?.let {
+            newGame = it.get(ARG_PARAM1) as Game?
+        }
+        gameListViewModel.insertGame(newGame)
         navController = findNavController()
     }
 
