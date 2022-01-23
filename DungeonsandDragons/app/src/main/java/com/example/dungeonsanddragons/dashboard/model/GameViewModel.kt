@@ -14,16 +14,10 @@ class GameListViewModel (val dataSource: GameSource): ViewModel() {
     val gameLiveData = dataSource.getGameList()
 
     // Check if data is present
-    fun insertGame(gameName: String?) {
-        if (gameName == null) {
+    fun insertGame(newGame: Game?) {
+        if (newGame == null) {
             return
         }
-        val newGame = Game(
-            Random.nextLong(),
-            gameName,
-            playerList(),
-            active = true
-        )
         dataSource.addGame(newGame)
     }
 }

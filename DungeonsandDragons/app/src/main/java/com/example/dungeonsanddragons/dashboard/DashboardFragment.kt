@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -21,21 +22,31 @@ import com.example.dungeonsanddragons.dashboard.model.HeaderAdapter
 import com.example.dungeonsanddragons.databinding.FragmentDashboardBinding
 import com.google.firebase.auth.FirebaseAuth
 
+private const val ARG_PARAM1 = "game"
+
 class DashboardFragment : Fragment() {
     private var _binding: FragmentDashboardBinding? = null
     private lateinit var usernameTextView: TextView
     private val binding get() = _binding!!
 
+    // Setup for passed in newgame
+    private var newGame: Game? = null
+
     // View model setup for recycler view
     private val gameListViewModel by viewModels<GameListViewModel> {
         GameListViewModelFactory(context)
     }
+//    private val gameListViewModel: GameListViewModel by activityViewModels()
 
     // Navigation
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        arguments?.let {
+            newGame = it.get(ARG_PARAM1) as Game?
+        }
+        gameListViewModel.insertGame(newGame)
         navController = findNavController()
     }
 
@@ -86,6 +97,7 @@ class DashboardFragment : Fragment() {
 
     private fun fabOnClick(){
         // Navigate to gameCreator
+        navController.navigate(R.id.createGameFragment)
         // Could also start activity for result
     }
 }
