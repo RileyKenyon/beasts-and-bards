@@ -11,7 +11,10 @@ import java.lang.IllegalArgumentException
 import kotlin.random.Random
 
 class PlayerListViewModel (val dataSource: PlayerSource) : ViewModel() {
-    var playerLiveData = dataSource.getPlayerList()
+    val fullPlayerList = dataSource.getPlayerList()
+    val _playerLiveData = MutableLiveData<List<Player>>(fullPlayerList.value)
+    val playerLiveData : LiveData<List<Player>>
+        get() = _playerLiveData
 //    var _playerLiveData = MutableLiveData<List<Player>>(dataSource.getPlayerList().value)
 
     // check if data is present
@@ -39,18 +42,26 @@ class PlayerListViewModel (val dataSource: PlayerSource) : ViewModel() {
 //            }
 //        }
 //    }
+//    init {
+//        _playerLiveData.value = dataSource.getPlayerList().value
+//    }
 
     fun updateFilter(s: CharSequence){
-        playerLiveData = Transformations.switchMap(playerLiveData){
-            val filteredPlayerList = MutableLiveData<List<Player>>()
-            filteredPlayerList.value = it?.filter { player ->
-                player.name.startsWith(s)
-            }
-            filteredPlayerList
+        _playerLiveData.value = fullPlayerList.value?.filter { player ->
+            player.name.startsWith(s)
         }
-        playerLiveData.value?.forEach { player ->
-            Log.d("PLAYERVIEWMODEL",player.name.toString())
-        }
+
+//            Transformations.switchMap(_playerLiveData.value){
+//            val filteredPlayerList = MutableLiveData<List<Player>>()
+//            filteredPlayerList.value = it?.filter { player ->
+//                player.name.startsWith(s)
+//            }
+//            filteredPlayerList
+//        }
+//        Log.d("PLAYERVIEWMODEL","Working!")
+//        playerLiveData.value?.forEach { player ->
+//            Log.d("PLAYERVIEWMODEL",player.name.toString())
+//        }
     }
 }
 

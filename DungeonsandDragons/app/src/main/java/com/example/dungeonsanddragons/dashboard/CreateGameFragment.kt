@@ -86,13 +86,10 @@ class CreateGameFragment : Fragment() {
                     Log.d(TAG,binding.playerFilter.text.toString())
                     // update filter
                     playerListViewModel.updateFilter(binding.playerFilter.text.toString())
-//                    playerAdapter.notifyDataSetChanged()
                 }
             })
 
         })
-
-
     }
 
     override fun onDestroyView(){
