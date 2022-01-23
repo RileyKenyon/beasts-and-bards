@@ -36,9 +36,12 @@ class PlayerListViewModel (val dataSource: PlayerSource) : ViewModel() {
         val currentList = newPlayerLiveData.value
         if (currentList == null){
             newPlayerLiveData.postValue(listOf(player))
-        } else {
+        } else if (currentList.contains(player)) {
+            return
+        }
+        else {
             val updatedList = currentList.toMutableList()
-            updatedList.add(0,player)
+            updatedList.add(player)
             newPlayerLiveData.postValue(updatedList)
         }
     }

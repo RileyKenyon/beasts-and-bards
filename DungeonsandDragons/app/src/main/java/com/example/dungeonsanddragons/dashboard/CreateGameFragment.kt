@@ -8,13 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dungeonsanddragons.dashboard.data.Game
-import com.example.dungeonsanddragons.dashboard.data.GameSource
 import com.example.dungeonsanddragons.dashboard.data.Player
 import com.example.dungeonsanddragons.dashboard.model.*
 import com.example.dungeonsanddragons.databinding.FragmentCreateGameBinding
@@ -68,9 +65,14 @@ class CreateGameFragment : Fragment() {
 //        super.onViewCreated(view, savedInstanceState)
 
         // Player recycler view
-        val playerAdapter = PlayerAdapter{player -> adapterOnClick(player)}
+        val playerAdapter = PlayerAdapter{player -> adapterOnClickAdd(player)}
         val recyclerView: RecyclerView = binding.playerRecyclerView
         recyclerView.adapter = playerAdapter
+
+        // New group recycler view
+        val groupAdapter = PlayerAdapter{player -> adapterOnClickRemove(player)}
+        val groupRecyclerView : RecyclerView = binding.groupRecyclerView
+        groupRecyclerView.adapter = groupAdapter
 
         // observe view player model
         playerListViewModel.playerLiveData.observe(viewLifecycleOwner, {
@@ -90,6 +92,13 @@ class CreateGameFragment : Fragment() {
                 }
             })
         })
+
+        // observe view group player model
+        playerListViewModel.newPlayerLiveData.observe(viewLifecycleOwner, {
+            it?.let {
+                groupAdapter.submitList(it as MutableList<Player>)
+            }
+        })
     }
 
     override fun onDestroyView(){
@@ -97,9 +106,14 @@ class CreateGameFragment : Fragment() {
         _binding = null
     }
 
-    private fun adapterOnClick(player: Player) {
-        // TODO: add player to the new game list
+    private fun adapterOnClickAdd(player: Player) {
         playerListViewModel.addPlayerToGroup(player)
+        Log.d(TAG, player.name)
+    }
+
+    private fun adapterOnClickRemove(player: Player) {
+        playerListViewModel.removePlayerFromGroup(player)
+        Log.d(TAG, player.name)
     }
 
     companion object {
