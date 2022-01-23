@@ -36,6 +36,16 @@ class GameSource(resources: Resources) {
         }
     }
 
+    fun getNextId() : Int {
+        val currentList = gameLiveData.value
+        return if (currentList == null){
+            0
+        } else {
+            gameLiveData.value?.size!!
+        }
+
+    }
+
     fun getGameList() : LiveData<List<Game>> {
         return gameLiveData
     }

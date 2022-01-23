@@ -33,6 +33,15 @@ class PlayerSource(resources: Resources) {
         }
     }
 
+    fun removePlayer(player: Player) {
+        val currentList = playerLiveData.value
+        if (currentList != null){
+            val updatedList = currentList.toMutableList()
+            updatedList.remove(player)
+            playerLiveData.postValue(updatedList)
+        }
+    }
+
     fun getPlayerList() : LiveData<List<Player>> {
         return playerLiveData
     }

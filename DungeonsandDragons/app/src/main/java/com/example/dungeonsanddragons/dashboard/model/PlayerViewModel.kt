@@ -15,7 +15,7 @@ class PlayerListViewModel (val dataSource: PlayerSource) : ViewModel() {
     val _playerLiveData = MutableLiveData<List<Player>>(fullPlayerList.value)
     val playerLiveData : LiveData<List<Player>>
         get() = _playerLiveData
-//    var _playerLiveData = MutableLiveData<List<Player>>(dataSource.getPlayerList().value)
+    val newPlayerLiveData = MutableLiveData<List<Player>>()
 
     // check if data is present
     fun insertPlayer(playerName: String?) {
@@ -31,37 +31,42 @@ class PlayerListViewModel (val dataSource: PlayerSource) : ViewModel() {
         dataSource.addPlayer(newPlayer)
     }
 
-//    fun getFilteredPlayerList(filter: Filter) {
-//        return performFiltering() playerLiveData
-//    }
-//    init {
-//        viewModelScope.launch {
-//            filter.collect { newFilter ->
-//                savedStateHandle.set(newFilter)
-//
-//            }
-//        }
-//    }
-//    init {
-//        _playerLiveData.value = dataSource.getPlayerList().value
-//    }
+    // Add players to grouping
+    fun addPlayerToGroup(player: Player) {
+        val currentList = newPlayerLiveData.value
+        if (currentList == null){
+            newPlayerLiveData.postValue(listOf(player))
+        } else {
+            val updatedList = currentList.toMutableList()
+            updatedList.add(0,player)
+            newPlayerLiveData.postValue(updatedList)
+        }
+    }
+
+    // Remove Player from grouping
+    fun removePlayerFromGroup(player: Player) {
+        val currentList = newPlayerLiveData.value
+        if (currentList != null) {
+            val updatedList = currentList.toMutableList()
+            updatedList.remove(player)
+            newPlayerLiveData.postValue(updatedList)
+        }
+    }
+
+    fun removePlayer(player : Player) {
+        // Loop through data and remove from list if matches
+        playerLiveData.value?.forEach { playerId ->
+            if (playerId.userId == player.userId){
+                dataSource.removePlayer(player)
+            }
+        }
+
+    }
 
     fun updateFilter(s: CharSequence){
         _playerLiveData.value = fullPlayerList.value?.filter { player ->
             player.name.startsWith(s)
         }
-
-//            Transformations.switchMap(_playerLiveData.value){
-//            val filteredPlayerList = MutableLiveData<List<Player>>()
-//            filteredPlayerList.value = it?.filter { player ->
-//                player.name.startsWith(s)
-//            }
-//            filteredPlayerList
-//        }
-//        Log.d("PLAYERVIEWMODEL","Working!")
-//        playerLiveData.value?.forEach { player ->
-//            Log.d("PLAYERVIEWMODEL",player.name.toString())
-//        }
     }
 }
 

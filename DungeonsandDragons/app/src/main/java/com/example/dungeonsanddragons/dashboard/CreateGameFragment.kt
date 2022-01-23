@@ -13,11 +13,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dungeonsanddragons.dashboard.data.Game
+import com.example.dungeonsanddragons.dashboard.data.GameSource
 import com.example.dungeonsanddragons.dashboard.data.Player
-import com.example.dungeonsanddragons.dashboard.model.PlayerAdapter
-import com.example.dungeonsanddragons.dashboard.model.PlayerListViewModel
-import com.example.dungeonsanddragons.dashboard.model.PlayerListViewModelFactory
+import com.example.dungeonsanddragons.dashboard.model.*
 import com.example.dungeonsanddragons.databinding.FragmentCreateGameBinding
+import kotlin.random.Random
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,7 +72,7 @@ class CreateGameFragment : Fragment() {
         val recyclerView: RecyclerView = binding.playerRecyclerView
         recyclerView.adapter = playerAdapter
 
-        // observe view model
+        // observe view player model
         playerListViewModel.playerLiveData.observe(viewLifecycleOwner, {
             it?.let {
                 playerAdapter.submitList(it as MutableList<Player>)
@@ -88,7 +89,6 @@ class CreateGameFragment : Fragment() {
                     playerListViewModel.updateFilter(binding.playerFilter.text.toString())
                 }
             })
-
         })
     }
 
@@ -99,7 +99,7 @@ class CreateGameFragment : Fragment() {
 
     private fun adapterOnClick(player: Player) {
         // TODO: add player to the new game list
-//        playerListViewModel.dataSource.addPlayer(player)
+        playerListViewModel.addPlayerToGroup(player)
     }
 
     companion object {

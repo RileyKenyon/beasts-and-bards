@@ -17,7 +17,8 @@
     <list default="true" id="0e424382-7ea3-4383-9d7d-3cd2a487ceb1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/dungeonsanddragons/dashboard/CreateGameFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/dungeonsanddragons/dashboard/CreateGameFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/dungeonsanddragons/dashboard/model/PlayerAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/dungeonsanddragons/dashboard/model/PlayerAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/dungeonsanddragons/dashboard/data/GameSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/dungeonsanddragons/dashboard/data/GameSource.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/dungeonsanddragons/dashboard/data/PlayerSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/dungeonsanddragons/dashboard/data/PlayerSource.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/dungeonsanddragons/dashboard/model/PlayerViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/dungeonsanddragons/dashboard/model/PlayerViewModel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -76,6 +77,8 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="KotlinClassFindUsagesOptions.isFieldsUsages" value="true" />
+    <property name="KotlinClassFindUsagesOptions.isMethodsUsages" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
