@@ -5,7 +5,7 @@
     <item
         android:id="@+id/character_sheet"
         android:icon="@drawable/ic_gray_baseline_home_24"
-        android:title="Character Sheet"
+        android:title="Character"
         android:enabled="true"/>
     <item
         android:id="@+id/inventory"
@@ -15,7 +15,7 @@
     <item
         android:id="@+id/monster_manual"
         android:icon="@drawable/ic_gray_baseline_menu_book_24"
-        android:title="Monster Manual"
+        android:title="Monsters"
         android:enabled="true"/>
     <item
         android:id="@+id/map"

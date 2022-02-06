@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import com.example.dungeonsanddragons.databinding.FragmentQuestBinding
 import com.example.dungeonsanddragons.databinding.NavHeaderBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,29 +51,6 @@ class QuestFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentQuestBinding.inflate(inflater, container, false)
-
-        // Setup action bar
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.character_sheet -> {
-                    Log.d(TAG,"Character sheet")
-                    true
-                }
-                R.id.inventory -> {
-                    Log.d(TAG,"Inventory")
-                    true
-                }
-                R.id.monster_manual -> {
-                    Log.d(TAG,"Monster Manual")
-                    true
-                }
-                R.id.map -> {
-                    Log.d(TAG,"Map")
-                    true
-                }
-                else -> false
-            }
-        }
         return binding.root
     }
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -17,6 +18,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.navigation.ui.navigateUp
 import com.beastsandbards.android.databinding.ActivityMainBinding
 import com.firebase.ui.auth.AuthUI
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -33,6 +35,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    // Firebase instance variables
+    private lateinit var db: FirebaseDatabase
+
+    // view variables
+    private lateinit var binding : ActivityMainBinding
     companion object {
         private const val TAG = "MainActivity"
         const val host = "10.0.2.2"
@@ -43,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -60,6 +67,32 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(setOf(R.id.dashboardFragment, R.id.nfcFragment, R.id.questFragment),binding.navigationDrawer)
         setupActionBar(appBarConfiguration)
         setupNavigationMenu(binding.navigationView)
+
+        // Watch for navigation destination
+        bottomNavBarVisibility(navController)
+
+        // Setup action bar
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.character_sheet -> {
+                    Log.d(MainActivity.TAG,"Character sheet")
+                    true
+                }
+                R.id.inventory -> {
+                    Log.d(MainActivity.TAG,"Inventory")
+                    true
+                }
+                R.id.monster_manual -> {
+                    Log.d(MainActivity.TAG,"Monster Manual")
+                    true
+                }
+                R.id.map -> {
+                    Log.d(MainActivity.TAG,"Map")
+                    true
+                }
+                else -> false
+            }
+        }
 
         // Check for debug mode of the firebase
         // "10.0.2.2" is a special value which allows the Android emulator to
@@ -124,5 +157,19 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG,"Signed out successfully")
                 navController.navigate(R.id.mainFragment)
             }
+    }
+
+    // Add listener to hide the bottom nav bar
+    private fun bottomNavBarVisibility(navController : NavController) {
+//        val v = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.mainFragment,
+                R.id.nfcFragment,
+                R.id.createGameFragment,
+                R.id.dashboardFragment -> binding.bottomNavigationView.visibility = View.GONE
+                else -> binding.bottomNavigationView.visibility = View.VISIBLE
+            }
+        }
     }
 }
