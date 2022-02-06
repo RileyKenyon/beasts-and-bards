@@ -26,6 +26,14 @@
             app:defaultNavHost="true"
             app:navGraph="@navigation/nav_graph" />
 
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/bottom_app_bar"
+            android:layout_gravity="bottom"
+            android:visibility="gone"/>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <!--    https://developer.android.com/guide/navigation/navigation-ui#add_a_navigation_drawer-->
     <com.google.android.material.navigation.NavigationView
