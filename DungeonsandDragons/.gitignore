@@ -32,6 +32,12 @@ build/
 captures/
 output.json 
     
-#NDK
+# NDK
 obj/
 .externalNativeBuild
+
+# npm
+**/node_modules/
+
+# General
+*.log
