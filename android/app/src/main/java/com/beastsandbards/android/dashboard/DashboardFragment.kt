@@ -101,7 +101,7 @@ class DashboardFragment : Fragment() {
     private fun adapterOnClick(game: Game) {
         // Navigate to the gameboard
 //        val bundle = bundleOf("game" to game)
-//        navController.navigate(R.id.gameBoard, bundle)
+        navController.navigate(R.id.questFragment)
     }
 
     private fun fabOnClick(){
