@@ -57,8 +57,8 @@ class MainFragment : Fragment() {
         viewModel.firebaseUserData.observe(viewLifecycleOwner, Observer { user ->
             val navController = findNavController()
             if (user != null) {
-                Log.d(TAG, user.toString())
-                navController.navigate(R.id.dashboardFragment)
+                Log.d(TAG, user.displayName.toString())
+                navController.navigate(R.id.action_mainFragment_to_dashboardFragment)
             } else {
                 Log.d(TAG, "null user")
                 launchSignInFlow()

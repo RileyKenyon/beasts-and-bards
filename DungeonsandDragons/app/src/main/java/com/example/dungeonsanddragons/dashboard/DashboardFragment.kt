@@ -73,12 +73,12 @@ class DashboardFragment : Fragment() {
         recyclerView.adapter = concatAdapter
 
         // observe view model
-        gameListViewModel.gameLiveData.observe(viewLifecycleOwner, {
+        gameListViewModel.gameLiveData.observe(viewLifecycleOwner) {
             it?.let {
                 gameAdapter.submitList(it as MutableList<Game>)
                 headerAdapter.updateGameCount(it.size)
             }
-        })
+        }
 
         val fab: View = binding.fab
         fab.setOnClickListener{fabOnClick()}

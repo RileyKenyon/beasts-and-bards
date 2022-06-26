@@ -8,6 +8,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
@@ -87,6 +89,14 @@ class MainActivity : AppCompatActivity() {
 //        return retValue
         menuInflater.inflate(R.menu.overflow_menu, menu)
         return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // TODO: Find a better way to fix issue with drawer layout extending
+        val drawerLayout = findViewById<DrawerLayout>(R.id.navigation_drawer)
+        drawerLayout.closeDrawer(GravityCompat.START)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
