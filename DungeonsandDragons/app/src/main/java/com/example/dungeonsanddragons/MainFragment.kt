@@ -15,11 +15,13 @@ import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.firebase.auth.FirebaseAuth
 
 /**
  * Main Fragment to handle authentication - monitor the live userdata
  * If user signs out, re-launch the Firebase UI
  */
+
 class MainFragment : Fragment() {
     companion object {
         const val TAG = "MainFragment"
@@ -67,8 +69,8 @@ class MainFragment : Fragment() {
     private fun launchSignInFlow() {
         // Authentication providers
         val providers = arrayListOf(
-            AuthUI.IdpConfig.EmailBuilder().build(),
-            AuthUI.IdpConfig.GoogleBuilder().build()
+            AuthUI.IdpConfig.GoogleBuilder().build(),
+            AuthUI.IdpConfig.EmailBuilder().build()
         )
 
         // Format UI for authentication
