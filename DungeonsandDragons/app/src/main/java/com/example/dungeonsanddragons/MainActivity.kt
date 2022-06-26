@@ -8,6 +8,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
@@ -56,7 +58,8 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         // Set of specifies the top level destinations
-        appBarConfiguration = AppBarConfiguration(setOf(R.id.dashboardFragment, R.id.nfcFragment),binding.navigationDrawer)
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.dashboardFragment, R.id.nfcFragment),
+            binding.navigationDrawer)
         setupActionBar(appBarConfiguration)
         setupNavigationMenu(binding.navigationView)
 
@@ -64,11 +67,12 @@ class MainActivity : AppCompatActivity() {
         // "10.0.2.2" is a special value which allows the Android emulator to
         // connect to "localhost" on the host computer. The port values are
         // defined in the firebase.json file.
-//        if (BuildConfig.DEBUG) {
-//            Firebase.database.useEmulator("10.0.2.2", 9000)
-//            Firebase.auth.useEmulator("10.0.2.2", 9099)
-//            Firebase.storage.useEmulator("10.0.2.2", 9199)
-//        }
+        if (BuildConfig.DEBUG) {
+            Firebase.database.useEmulator("10.0.2.2", 9000)
+            Firebase.auth.useEmulator("10.0.2.2", 9099)
+            Firebase.storage.useEmulator("10.0.2.2", 9199)
+            Log.d(TAG, "Using Debug")
+        }
 
         // Initialize Realtime Database
         db = Firebase.database
@@ -85,6 +89,14 @@ class MainActivity : AppCompatActivity() {
 //        return retValue
         menuInflater.inflate(R.menu.overflow_menu, menu)
         return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // TODO: Find a better way to fix issue with drawer layout extending
+        val drawerLayout = findViewById<DrawerLayout>(R.id.navigation_drawer)
+        drawerLayout.closeDrawer(GravityCompat.START)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
