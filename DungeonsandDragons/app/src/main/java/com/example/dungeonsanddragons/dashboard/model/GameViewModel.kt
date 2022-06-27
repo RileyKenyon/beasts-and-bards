@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.dungeonsanddragons.dashboard.data.Game
 import com.example.dungeonsanddragons.dashboard.data.GameSource
 import com.example.dungeonsanddragons.dashboard.data.playerList
+import com.google.firebase.auth.FirebaseUser
 import java.lang.IllegalArgumentException
 import kotlin.random.Random
 
@@ -22,12 +23,12 @@ class GameListViewModel (val dataSource: GameSource): ViewModel() {
     }
 }
 
-class GameListViewModelFactory(private val context: Context?) : ViewModelProvider.Factory {
+class GameListViewModelFactory(private val user: FirebaseUser?) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(GameListViewModel::class.java)){
             @Suppress("UNCHECKED_CAST")
             return GameListViewModel(
-                dataSource = GameSource.getGameSource(context?.resources!!)
+                dataSource = GameSource.getGameSource(user!!)
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel Class")
