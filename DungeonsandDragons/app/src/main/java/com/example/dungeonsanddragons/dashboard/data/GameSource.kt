@@ -27,16 +27,31 @@ class GameSource(user: FirebaseUser) {
         }
     }
 
+
     private val database = Firebase.database
     var ref = database.getReference("games")
-    var gameList : List<Game> = tempGameList()
-    private var gameLiveData = MutableLiveData(gameList)
+    var gameLiveData = MutableLiveData<List<Game>>()
+    var gameData = ref.get().addOnCompleteListener{ data ->
+        val gameListServer : MutableList<Game> = mutableListOf<Game>()
+        for (game in  data.result.children){
+            val gameData = game.value as HashMap<*, *>
+            val g = Game(
+                gameData["id"] as Long,
+                gameData["name"].toString(),
+                listOf<Player>(),
+                gameData["active"] as Boolean
+            )
+            gameListServer.add(g)
+        }
+        val localList = gameListServer.sortedBy { it.name.lowercase() }.sortedByDescending { it.active }
+        gameLiveData.postValue(localList)
+    }
 
     // TODO: Clean up listener code - should request games only from player
     private val gameListener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
             if (snapshot.childrenCount > 0) {
-                val gameListServer : MutableList<Game> = mutableListOf<Game>()
+                var gameListServer : MutableList<Game> = mutableListOf<Game>()
                 for (game in snapshot.children) {
                     val gameData = game.value as HashMap<*, *>
                     val g = Game(
@@ -48,7 +63,10 @@ class GameSource(user: FirebaseUser) {
                     gameListServer.add(g)
                     Log.d(TAG, g.toString())
                 }
-                gameLiveData.postValue(gameListServer.toList())
+                // TODO: Reduce the number of times this sorting is called
+                val localList = gameListServer.sortedBy { it.name.lowercase() }.sortedByDescending { it.active }
+                Log.d(TAG,localList.toString())
+                gameLiveData.postValue(localList)
             }
         }
 
@@ -70,10 +88,24 @@ class GameSource(user: FirebaseUser) {
             val updatedList = currentList.toMutableList()
             updatedList.add(0,game)
             // sort list by active status
-            updatedList.sortBy { it.name }
+            updatedList.sortBy { it.name.lowercase() }
             updatedList.sortByDescending { it.active }
             gameLiveData.postValue(updatedList)
         }
+
+        // Post to the rt database
+        val uid = game.name.let { name ->
+            name.apply { lowercase() }
+                .apply { trim() }
+                .apply { replace("\\s".toRegex(),"") }
+        }
+        val gameValues = game.toMap().toMutableMap()
+        // TODO: Add a loop for participants to create the nested map
+        gameValues["participants"] = null
+        val childUpdates = hashMapOf<String, Any?>(
+            "/$uid" to gameValues
+        )
+        ref.updateChildren(childUpdates)
     }
 
     fun getNextId() : Int {
@@ -88,9 +120,8 @@ class GameSource(user: FirebaseUser) {
 
     fun getGameList() : LiveData<List<Game>> {
         // sorting of initial data by active games
-
-        val initialGameList = gameList?.sortedBy {it.name}.sortedBy { !it.active }
-        gameLiveData = MutableLiveData(initialGameList)
+        val initialGameList = gameLiveData.value?.sortedBy {it.name.lowercase()}?.sortedByDescending {it.active}
+        gameLiveData.postValue(initialGameList)
         return gameLiveData
     }
 }

@@ -2,6 +2,7 @@ package com.example.dungeonsanddragons.dashboard.data
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.Exclude
 import com.google.firebase.database.ValueEventListener
 
 data class Game(
@@ -9,7 +10,17 @@ data class Game(
     val name: String,
     val participants: List<Player>,
     val active: Boolean
-)
+) {
+    @Exclude
+    fun toMap(): Map<String, Any?> {
+        return mapOf(
+            "id" to id,
+            "name" to name,
+            "participants" to participants,
+            "active" to active
+        )
+    }
+}
 
 fun tempGameList() : List<Game> {
 
