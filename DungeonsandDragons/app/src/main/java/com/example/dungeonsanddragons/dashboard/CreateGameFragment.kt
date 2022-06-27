@@ -12,15 +12,20 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dungeonsanddragons.FirebaseUserLiveData
+import com.example.dungeonsanddragons.LoginViewModel
+import com.example.dungeonsanddragons.MainFragment
 import com.example.dungeonsanddragons.R
 import com.example.dungeonsanddragons.dashboard.data.Game
 import com.example.dungeonsanddragons.dashboard.data.GameSource
 import com.example.dungeonsanddragons.dashboard.data.Player
 import com.example.dungeonsanddragons.dashboard.model.*
 import com.example.dungeonsanddragons.databinding.FragmentCreateGameBinding
+import com.google.firebase.auth.FirebaseUser
 import kotlin.random.Random
 
 // TODO: Rename parameter arguments, choose names that match
@@ -36,6 +41,8 @@ private const val ARG_PARAM2 = "param2"
 class CreateGameFragment : Fragment() {
     private var _binding: FragmentCreateGameBinding? = null
     private val binding get() = _binding!!
+    private lateinit var user : FirebaseUser
+    private val viewModel by viewModels<LoginViewModel>()
 
     // View model setup for recycler view
     private val playerListViewModel by viewModels<PlayerListViewModel> {
@@ -45,7 +52,7 @@ class CreateGameFragment : Fragment() {
     // View model for gameList
 //    private val gameListViewModel: GameListViewModel by activityViewModels()
     private val gameListViewModel by viewModels<GameListViewModel> {
-        GameListViewModelFactory(context)
+        GameListViewModelFactory(user)
     }
 
     // Navigation
@@ -86,29 +93,39 @@ class CreateGameFragment : Fragment() {
         val groupRecyclerView : RecyclerView = binding.groupRecyclerView
         groupRecyclerView.adapter = groupAdapter
 
+        // observe active user
+        observeAuthenticationState()
+
         // observe view player model
-        playerListViewModel.playerLiveData.observe(viewLifecycleOwner, {
+        playerListViewModel.playerLiveData.observe(viewLifecycleOwner) {
             it?.let {
                 playerAdapter.submitList(it as MutableList<Player>)
             }
 
             // Player filter
-            binding.playerFilter.addTextChangedListener(object: TextWatcher {
+            binding.playerFilter.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun beforeTextChanged(
+                    s: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                     // update filter
                     playerListViewModel.updateFilter(binding.playerFilter.text.toString())
                 }
             })
-        })
+        }
 
         // observe view group player model
-        playerListViewModel.newPlayerLiveData.observe(viewLifecycleOwner, {
+        playerListViewModel.newPlayerLiveData.observe(viewLifecycleOwner) {
             it?.let {
                 groupAdapter.submitList(it as MutableList<Player>)
             }
-        })
+        }
 
         // Add on-click listener for submit button
         val button = binding.submit
@@ -152,6 +169,18 @@ class CreateGameFragment : Fragment() {
     private fun adapterOnClickRemove(player: Player) {
         playerListViewModel.removePlayerFromGroup(player)
         Log.d(TAG, player.name)
+    }
+
+    private fun observeAuthenticationState() {
+        viewModel.firebaseUserData.observe(viewLifecycleOwner, Observer {
+            val navController = findNavController()
+            if (it != null) {
+                user = it
+            } else {
+                Log.d(MainFragment.TAG, "null user")
+                // TODO: Navigate back to authentication
+            }
+        })
     }
 
     companion object {

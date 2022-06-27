@@ -1,6 +1,7 @@
 package com.example.dungeonsanddragons.dashboard
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,12 +22,19 @@ import com.example.dungeonsanddragons.dashboard.model.GameListViewModelFactory
 import com.example.dungeonsanddragons.dashboard.model.HeaderAdapter
 import com.example.dungeonsanddragons.databinding.FragmentDashboardBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 private const val ARG_PARAM1 = "game"
 
 class DashboardFragment : Fragment() {
+
+    companion object {
+        const val TAG = "DashboardFragment"
+    }
+
     private var _binding: FragmentDashboardBinding? = null
     private lateinit var usernameTextView: TextView
+    private lateinit var user : FirebaseUser
     private val binding get() = _binding!!
 
     // Setup for passed in newgame
@@ -34,7 +42,7 @@ class DashboardFragment : Fragment() {
 
     // View model setup for recycler view
     private val gameListViewModel by viewModels<GameListViewModel> {
-        GameListViewModelFactory(context)
+        GameListViewModelFactory(user)
     }
 //    private val gameListViewModel: GameListViewModel by activityViewModels()
 
@@ -46,7 +54,7 @@ class DashboardFragment : Fragment() {
         arguments?.let {
             newGame = it.get(ARG_PARAM1) as Game?
         }
-        gameListViewModel.insertGame(newGame)
+//        gameListViewModel.insertGame(newGame)
         navController = findNavController()
     }
 
@@ -61,8 +69,9 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         usernameTextView = binding.welcomeMessage
         // TODO: Replace this with the observer pattern
-        val user = FirebaseAuth.getInstance().currentUser
-        val username = user?.displayName.toString()
+        user = FirebaseAuth.getInstance().currentUser!!
+        Log.d(TAG, user.uid)
+        val username = user.displayName.toString()
         usernameTextView.text = getString(R.string.welcome_back, username)
 
         // Game Recycler View

@@ -13,3 +13,7 @@ firebase emulators:start
 | Authentication  | localhost:9099 | http://localhost:4000/auth     |
 | Database        | localhost:9000 | http://localhost:4000/database |
 | Storage         | localhost:9199 | http://localhost:4000/storage  | 
+
+
+When testing the database conntection locally, update the `database.rules.json` to have read/write access.
+

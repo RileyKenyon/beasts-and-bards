@@ -1,5 +1,9 @@
 package com.example.dungeonsanddragons.dashboard.data
 
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+
 data class Game(
     val id: Long,
     val name: String,
@@ -7,7 +11,8 @@ data class Game(
     val active: Boolean
 )
 
-fun gameList() : List<Game> {
+fun tempGameList() : List<Game> {
+
     return listOf(
         Game(
             id = 0,

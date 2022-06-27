@@ -1,0 +1,26 @@
+{
+    "games": {
+        "funkybunch" : {
+            "id" : 0,
+            "name" : "Funky Bunch",
+            "active" : true,
+            "participants": {
+                "Bob" : true,
+                "Ted" : true,
+                "Aly" : false,
+                "DrH" : false
+            }
+        },
+        "specialk" : {
+            "id" : 1,
+            "name" : "Special K",
+            "active" : false,
+            "participants" : {
+                "Bob" : true,
+                "Ted" : true,
+                "Aly" : false,
+                "DrH" : false
+            }
+        }
+    }
+}
