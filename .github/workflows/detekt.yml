@@ -32,7 +32,7 @@ on:
 env:
   # Release tag associated with version of Detekt to be installed
   # SARIF support (required for this workflow) was introduced in Detekt v1.15.0
-  DETEKT_RELEASE_TAG: v1.15.0
+  DETEKT_RELEASE_TAG: "v1.21.0-RC2"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -57,7 +57,7 @@ jobs:
           query getReleaseAssetDownloadUrl($tagName: String!) {
             repository(name: "detekt", owner: "detekt") {
               release(tagName: $tagName) {
-                releaseAssets(name: "detekt", first: 1) {
+                releaseAssets(last:1) {
                   nodes {
                     downloadUrl
                   }
@@ -70,9 +70,11 @@ jobs:
           }
         ' 1> gh_response.json
         
-        DETEKT_RELEASE_SHA=$(jq --raw-output '.data.repository.release.releaseAssets.tagCommit.oid' gh_response.json)
-        if [ $DETEKT_RELEASE_SHA != "37f0a1d006977512f1f216506cd695039607c3e5" ]; then
+        DETEKT_RELEASE_SHA=$(jq --raw-output '.data.repository.release.tagCommit.oid' gh_response.json)
+        if [ $DETEKT_RELEASE_SHA != "58d4b8e839896b280b8a3f4b8ff856f434afab77" ]; then
           echo "Release tag doesn't match expected commit SHA"
+          echo $DETEKT_RELEASE_SHA
+          echo $(cat gh_response.json)
           exit 1
         fi
         
