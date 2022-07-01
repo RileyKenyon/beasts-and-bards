@@ -39,3 +39,5 @@ jobs:
 
       - name: "detekt"
         uses: natiginfo/action-detekt-all@1.21.0-RC2
+        with:
+          args: --fail-fast --config ../../DungeonsandDragons/config/detekt/detekt.yaml
