@@ -84,8 +84,10 @@ class DashboardFragment : Fragment() {
         // observe view model
         gameListViewModel.gameLiveData.observe(viewLifecycleOwner) {
             it?.let {
-                gameAdapter.submitList(it as MutableList<Game>)
-                headerAdapter.updateGameCount(it.size)
+                if (it.isNotEmpty()) {
+                    gameAdapter.submitList(it as MutableList<Game>)
+                    headerAdapter.updateGameCount(it.size)
+                }
             }
         }
 
