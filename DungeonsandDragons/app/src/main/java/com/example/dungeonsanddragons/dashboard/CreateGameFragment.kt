@@ -1,6 +1,5 @@
 package com.example.dungeonsanddragons.dashboard
 
-import android.content.res.Resources
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,21 +8,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dungeonsanddragons.FirebaseUserLiveData
 import com.example.dungeonsanddragons.LoginViewModel
 import com.example.dungeonsanddragons.MainFragment
 import com.example.dungeonsanddragons.R
 import com.example.dungeonsanddragons.dashboard.data.Game
-import com.example.dungeonsanddragons.dashboard.data.GameSource
+import com.example.dungeonsanddragons.dashboard.model.GameListViewModel
+import com.example.dungeonsanddragons.dashboard.model.GameListViewModelFactory
 import com.example.dungeonsanddragons.dashboard.data.Player
-import com.example.dungeonsanddragons.dashboard.model.*
+import com.example.dungeonsanddragons.dashboard.model.PlayerListViewModelFactory
+import com.example.dungeonsanddragons.dashboard.model.PlayerListViewModel
+import com.example.dungeonsanddragons.dashboard.model.PlayerAdapter
+
+
+
 import com.example.dungeonsanddragons.databinding.FragmentCreateGameBinding
 import com.google.firebase.auth.FirebaseUser
 import kotlin.random.Random
@@ -104,18 +106,17 @@ class CreateGameFragment : Fragment() {
 
             // Player filter
             binding.playerFilter.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    TODO("Not yet implemented")
                 }
 
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                     // update filter
                     playerListViewModel.updateFilter(binding.playerFilter.text.toString())
+                }
+
+                override fun afterTextChanged(p0: Editable?) {
+                    TODO("Not yet implemented")
                 }
             })
         }

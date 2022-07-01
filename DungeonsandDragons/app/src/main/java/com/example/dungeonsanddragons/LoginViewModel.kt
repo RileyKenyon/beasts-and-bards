@@ -12,7 +12,7 @@ import kotlin.random.Random
 class LoginViewModel : ViewModel() {
 
     companion object {
-        val TAG = "LoginViewModel"
+        const val TAG = "LoginViewModel"
     }
 
     enum class AuthenticationState {

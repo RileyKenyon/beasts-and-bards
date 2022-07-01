@@ -2,10 +2,8 @@ package com.example.dungeonsanddragons
 
 import android.nfc.NdefMessage
 import android.nfc.NdefRecord
-import android.nfc.NdefRecord.*
-import android.nfc.NfcAdapter
-import android.nfc.Tag
-import android.nfc.tech.Ndef
+import android.nfc.NdefRecord.TNF_MIME_MEDIA
+import android.nfc.NdefRecord.TNF_WELL_KNOWN
 import android.os.Bundle
 import android.widget.TextView
 import android.util.Log
@@ -56,7 +54,7 @@ class NfcFragment : Fragment(){
         // Read the payload and convert to a UTF8 string
         payloadTextView.text = getCurrentRecordText()
         idTextView.text = id
-        Log.i("TAG ID",idTextView.text.toString())
+        Log.i(TAG,idTextView.text.toString())
 
     }
 
