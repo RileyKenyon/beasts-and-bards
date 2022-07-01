@@ -13,7 +13,7 @@ detekt {
     
     // Define the detekt configuration(s) you want to use. 
     // Defaults to the default detekt configuration.
-    config = files("../config/detekt/config.yml")
+    config = files("../config/detekt/detekt.yml")
     
     // Applies the config files on top of detekt's default config file. `false` by default.
     buildUponDefaultConfig = false
