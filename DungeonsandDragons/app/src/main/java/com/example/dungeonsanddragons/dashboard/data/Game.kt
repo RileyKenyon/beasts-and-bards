@@ -78,12 +78,6 @@ fun tempGameList() : List<Game> {
             name = "Fish",
             participants = playerList(),
             active = true
-        ),
-        Game(
-            id = 9,
-            name = "Beasts and Bards",
-            participants = playerList(),
-            active = true
         )
     )
 }

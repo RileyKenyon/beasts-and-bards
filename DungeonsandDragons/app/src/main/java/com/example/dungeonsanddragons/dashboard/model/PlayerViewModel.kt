@@ -1,18 +1,18 @@
 package com.example.dungeonsanddragons.dashboard.model
 
 import android.content.Context
-import android.util.Log
-import android.widget.Filter
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
 import com.example.dungeonsanddragons.dashboard.data.Player
 import com.example.dungeonsanddragons.dashboard.data.PlayerSource
-import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 import kotlin.random.Random
 
 class PlayerListViewModel (val dataSource: PlayerSource) : ViewModel() {
     val fullPlayerList = dataSource.getPlayerList()
-    val _playerLiveData = MutableLiveData<List<Player>>(fullPlayerList.value)
+    private val _playerLiveData = MutableLiveData<List<Player>>(fullPlayerList.value)
     val playerLiveData : LiveData<List<Player>>
         get() = _playerLiveData
     val newPlayerLiveData = MutableLiveData<List<Player>>()

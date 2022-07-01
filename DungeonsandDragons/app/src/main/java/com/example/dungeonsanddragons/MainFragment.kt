@@ -30,7 +30,7 @@ class MainFragment : Fragment() {
     // Get a reference to the ViewModel scoped to this fragment
     private val viewModel by viewModels<LoginViewModel>()
     private lateinit var _binding: FragmentMainBinding
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     // Firebase configuration
     private val signInLauncher = registerForActivityResult(
@@ -91,7 +91,6 @@ class MainFragment : Fragment() {
     }
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
-        val response = result.idpResponse
         if (result.resultCode == Activity.RESULT_OK) {
             // successfully signed in
             Log.d(MainFragment.TAG, "Sign in successful")
