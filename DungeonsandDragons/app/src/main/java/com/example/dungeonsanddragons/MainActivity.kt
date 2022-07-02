@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 //        val messagesRef = db.reference.child(MESSAGES_CHILD)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
 //        val navigationView = findViewById<NavigationView>(R.id.navigation_view)
 //        if (navigationView != null) {
