@@ -35,8 +35,6 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
-        const val MESSAGES_CHILD = "messages"
-        const val ANONYMOUS = "anonymous"
         const val host = "10.0.2.2"
         const val databasePort = 9000
         const val authPort = 9099
@@ -69,11 +67,11 @@ class MainActivity : AppCompatActivity() {
         // connect to "localhost" on the host computer. The port values are
         // defined in the firebase.json file.
 
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.FIREBASE_DEBUG) {
             Firebase.database.useEmulator(host, databasePort)
             Firebase.auth.useEmulator(host, authPort)
             Firebase.storage.useEmulator(host, storagePort)
-            Log.d(TAG, "Using Debug")
+            Log.d(TAG, "Using Firebase Debugging")
         }
 
         // Initialize Realtime Database

@@ -8,8 +8,23 @@ plugins {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
     buildToolsVersion "30.0.3"
+
+    def keystorePropertiesFile = rootProject.file("./local.properties")
+    def keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    signingConfigs {
+        debug {
+            storeFile file(keystoreProperties['keystore.debug.storeFile'])
+        }
+        release {
+            storeFile file(keystoreProperties['keystore.release.storeFile'])
+            storePassword keystoreProperties['keystore.release.storePassword']
+            keyAlias keystoreProperties['keystore.release.keyAlias']
+            keyPassword keystoreProperties['keystore.release.keyPassword']
+        }
+    }
 
     buildFeatures {
         viewBinding = true
@@ -24,12 +39,21 @@ android {
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable false
+            signingConfig signingConfigs.release
+            buildConfigField "Boolean", "FIREBASE_DEBUG", "false"
+        }
+        debug {
+            signingConfig signingConfigs.debug
+            // TODO: Add application suffix - need to create additional apps in firebase console
+            buildConfigField "Boolean", "FIREBASE_DEBUG", "true"
         }
     }
     compileOptions {
