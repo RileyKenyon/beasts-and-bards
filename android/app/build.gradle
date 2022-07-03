@@ -1,0 +1,104 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.gms.google-services'
+    id ("io.gitlab.arturbosch.detekt").version("1.21.0-RC2")
+}
+
+android {
+    compileSdkVersion 32
+    buildToolsVersion "30.0.3"
+
+    def keystorePropertiesFile = rootProject.file("./local.properties")
+    def keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    signingConfigs {
+        debug {
+            storeFile file(keystoreProperties['keystore.debug.storeFile'])
+        }
+        release {
+            storeFile file(keystoreProperties['keystore.release.storeFile'])
+            storePassword keystoreProperties['keystore.release.storePassword']
+            keyAlias keystoreProperties['keystore.release.keyAlias']
+            keyPassword keystoreProperties['keystore.release.keyPassword']
+        }
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
+    defaultConfig {
+        applicationId "com.beastsandbards.android"
+        multiDexEnabled true
+        minSdkVersion 19
+        targetSdkVersion 32
+        versionCode 1
+        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable false
+//            signingConfig signingConfigs.release
+            buildConfigField "Boolean", "FIREBASE_DEBUG", "false"
+        }
+        debug {
+            signingConfig signingConfigs.debug
+            // TODO: Add application suffix - need to create additional apps in firebase console
+            buildConfigField "Boolean", "FIREBASE_DEBUG", "true"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.5.0'
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation "androidx.recyclerview:recyclerview:1.2.0-alpha04"
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+
+    // Google Sign In SDK
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+
+    // Firebase SDK
+    implementation platform('com.google.firebase:firebase-bom:30.2.0')
+    implementation 'com.google.firebase:firebase-database-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+
+    // Firebase UI Library
+     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+     implementation 'com.firebaseui:firebase-ui-database:7.2.0'
+}
+
+repositories {
+    google()
+    mavenCentral()
+}
