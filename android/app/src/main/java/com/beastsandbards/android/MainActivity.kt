@@ -61,7 +61,9 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         // Set of specifies the top level destinations
-        appBarConfiguration = AppBarConfiguration(setOf(R.id.dashboardFragment, R.id.nfcFragment, R.id.questFragment),binding.navigationDrawer)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.dashboardFragment, R.id.nfcFragment, R.id.questFragment),
+            binding.navigationDrawer)
         setupActionBar(appBarConfiguration)
         setupNavigationMenu(binding.navigationView)
 
