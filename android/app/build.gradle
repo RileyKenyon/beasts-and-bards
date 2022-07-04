@@ -19,10 +19,12 @@ android {
             storeFile file(keystoreProperties['keystore.debug.storeFile'])
         }
         release {
-            storeFile file(keystoreProperties['keystore.release.storeFile'])
-            storePassword keystoreProperties['keystore.release.storePassword']
-            keyAlias keystoreProperties['keystore.release.keyAlias']
-            keyPassword keystoreProperties['keystore.release.keyPassword']
+            // https://www.timroes.de/handling-signing-configs-with-gradle
+            if (project.hasProperty("android.signing.dir")
+                && project.hasProperty("android.signing.config")
+                && new File(project.property("android.signing.dir"), project.property("android.signing.config")).exists()) {
+                apply from: (project.property("android.signing.dir") + "\\" + project.property("android.signing.config"));
+            }
         }
     }
 
@@ -47,7 +49,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
-//            signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
             buildConfigField "Boolean", "FIREBASE_DEBUG", "false"
         }
         debug {
