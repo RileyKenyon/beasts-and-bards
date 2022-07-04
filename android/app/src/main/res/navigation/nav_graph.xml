@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/questFragment"
-        android:name="com.example.dungeonsanddragons.QuestFragment"
+        android:name="com.beastsandbards.android.QuestFragment"
         android:label="Quest"
         tools:layout="@layout/fragment_quest" />
 </navigation>

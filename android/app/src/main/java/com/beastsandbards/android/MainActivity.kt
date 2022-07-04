@@ -35,9 +35,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    // Firebase instance variables
-    private lateinit var db: FirebaseDatabase
-
     // view variables
     private lateinit var binding : ActivityMainBinding
     companion object {
