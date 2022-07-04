@@ -15,11 +15,27 @@
       },
       "oauth_client": [
         {
-          "client_id": "604995607903-o2p388c65bknljj3gmpi6nibjrpjm076.apps.googleusercontent.com",
+          "client_id": "604995607903-c4bjp0o5ta8tnvipou566il0b4m45gi5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.beastsandbards.android",
+            "certificate_hash": "96ac0d9a37bf7c9d9e8c1730c90ef70e04ef9f70"
+          }
+        },
+        {
+          "client_id": "604995607903-dguckae3u4lhpct3nm6hk8kuv2fmmckp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.beastsandbards.android",
             "certificate_hash": "7e9e68d14e04a07236044414891263ac8e7267c8"
+          }
+        },
+        {
+          "client_id": "604995607903-u3h94a3ghl1nhjlebpkbgd714vknu259.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.beastsandbards.android",
+            "certificate_hash": "1cd8d6df72e58e2327f4bb2c5d700eaa035fcadd"
           }
         },
         {

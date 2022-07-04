@@ -1,4 +1,4 @@
-package com.example.dungeonsanddragons
+package com.beastsandbards.android
 
 import android.os.Bundle
 import android.util.Log
@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import com.example.dungeonsanddragons.databinding.FragmentQuestBinding
-import com.example.dungeonsanddragons.databinding.NavHeaderBinding
+import com.beastsandbards.android.databinding.FragmentQuestBinding
+import com.beastsandbards.android.databinding.NavHeaderBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 // TODO: Rename parameter arguments, choose names that match
