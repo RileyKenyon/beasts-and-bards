@@ -11,7 +11,7 @@ import java.lang.IllegalArgumentException
 import kotlin.random.Random
 
 class PlayerListViewModel (val dataSource: PlayerSource) : ViewModel() {
-    val fullPlayerList = dataSource.getPlayerList()
+    private val fullPlayerList = dataSource.getPlayerList()
     private val _playerLiveData = MutableLiveData<List<Player>>(fullPlayerList.value)
     val playerLiveData : LiveData<List<Player>>
         get() = _playerLiveData

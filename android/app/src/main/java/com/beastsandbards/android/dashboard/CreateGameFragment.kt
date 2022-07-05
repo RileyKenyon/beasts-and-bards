@@ -107,7 +107,7 @@ class CreateGameFragment : Fragment() {
             // Player filter
             binding.playerFilter.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    TODO("Not yet implemented")
+                    // Do not need to know history of text
                 }
 
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -116,7 +116,7 @@ class CreateGameFragment : Fragment() {
                 }
 
                 override fun afterTextChanged(p0: Editable?) {
-                    TODO("Not yet implemented")
+                    // Do not need to edit the text
                 }
             })
         }
