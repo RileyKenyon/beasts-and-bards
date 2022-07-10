@@ -20,6 +20,7 @@ import com.beastsandbards.android.dashboard.data.Game
 import com.beastsandbards.android.dashboard.model.GameListViewModel
 import com.beastsandbards.android.dashboard.model.GameListViewModelFactory
 import com.beastsandbards.android.dashboard.data.Player
+import com.beastsandbards.android.dashboard.data.User
 import com.beastsandbards.android.dashboard.model.PlayerListViewModelFactory
 import com.beastsandbards.android.dashboard.model.PlayerListViewModel
 import com.beastsandbards.android.dashboard.model.PlayerAdapter
@@ -43,7 +44,7 @@ private const val ARG_PARAM2 = "param2"
 class CreateGameFragment : Fragment() {
     private var _binding: FragmentCreateGameBinding? = null
     private val binding get() = _binding!!
-    private lateinit var user : FirebaseUser
+    private lateinit var user : User
     private val viewModel by viewModels<LoginViewModel>()
 
     // View model setup for recycler view
@@ -173,7 +174,7 @@ class CreateGameFragment : Fragment() {
     }
 
     private fun observeAuthenticationState() {
-        viewModel.firebaseUserData.observe(viewLifecycleOwner, Observer {
+        viewModel.userLiveData.observe(viewLifecycleOwner, Observer {
             val navController = findNavController()
             if (it != null) {
                 user = it

@@ -15,6 +15,7 @@ import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.firebase.auth.FirebaseAuth
 
 /**
  * Main Fragment to handle authentication - monitor the live userdata
@@ -27,7 +28,9 @@ class MainFragment : Fragment() {
     }
 
     // Get a reference to the ViewModel scoped to this fragment
-    private val viewModel by viewModels<LoginViewModel>()
+    private val loginViewModel by viewModels<LoginViewModel> {
+        LoginViewModelFactory()
+    }
     private lateinit var _binding: FragmentMainBinding
     private val binding get() = _binding
 
@@ -53,10 +56,10 @@ class MainFragment : Fragment() {
     }
 
     private fun observeAuthenticationState() {
-        viewModel.firebaseUserData.observe(viewLifecycleOwner, Observer { user ->
+        loginViewModel.userLiveData.observe(viewLifecycleOwner, Observer { user ->
             val navController = findNavController()
             if (user != null) {
-                Log.d(TAG, user.displayName.toString())
+                Log.d(TAG, user.name.toString())
                 navController.navigate(R.id.action_mainFragment_to_dashboardFragment)
             } else {
                 Log.d(TAG, "null user")

@@ -10,12 +10,12 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 // TODO : Change this interface to be a Player instead
-class GameSource(user: FirebaseUser) {
+class GameSource(user: User?) {
 
     companion object {
         const val TAG = "GameSource"
         private var INSTANCE: GameSource? = null
-        fun getGameSource(user: FirebaseUser) : GameSource {
+        fun getGameSource(user: User?) : GameSource {
             return synchronized(GameSource::class){
                 val newInstance = INSTANCE ?: GameSource(user)
                 INSTANCE = newInstance

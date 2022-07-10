@@ -1,7 +1,6 @@
 package com.beastsandbards.android.dashboard.data
 
 import com.google.firebase.database.Exclude
-import java.util.*
 
 // TODO: Add game list to user
 data class User(

@@ -12,8 +12,12 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.beastsandbards.android.LoginViewModel
+import com.beastsandbards.android.LoginViewModelFactory
 import com.beastsandbards.android.R
 import com.beastsandbards.android.dashboard.data.Game
+import com.beastsandbards.android.dashboard.data.User
+import com.beastsandbards.android.dashboard.data.UserSource
 import com.beastsandbards.android.dashboard.model.GameAdapter
 import com.beastsandbards.android.dashboard.model.GameListViewModel
 import com.beastsandbards.android.dashboard.model.GameListViewModelFactory
@@ -32,7 +36,7 @@ class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
     private lateinit var usernameTextView: TextView
-    private lateinit var user : FirebaseUser
+    private var user : User? = null
     private val binding get() = _binding!!
 
     // Setup for passed in newgame
@@ -42,7 +46,11 @@ class DashboardFragment : Fragment() {
     private val gameListViewModel by viewModels<GameListViewModel> {
         GameListViewModelFactory(user)
     }
-//    private val gameListViewModel: GameListViewModel by activityViewModels()
+
+    // Get user information
+    private val userViewModel by viewModels<LoginViewModel> {
+        LoginViewModelFactory()
+    }
 
     // Navigation
     private lateinit var navController: NavController
@@ -52,7 +60,6 @@ class DashboardFragment : Fragment() {
         arguments?.let {
             newGame = it.get(ARG_PARAM1) as Game?
         }
-//        gameListViewModel.insertGame(newGame)
         navController = findNavController()
     }
 
@@ -66,11 +73,19 @@ class DashboardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         usernameTextView = binding.welcomeMessage
-        // TODO: Replace this with the observer pattern
-        user = FirebaseAuth.getInstance().currentUser!!
-        Log.d(TAG, user.uid)
-        val username = user.displayName.toString()
-        usernameTextView.text = getString(R.string.welcome_back, username)
+//        val firebaseUser = FirebaseAuth.getInstance().currentUser!!
+//        user = User(firebaseUser.uid.toString(),
+//                    firebaseUser.displayName.toString(),
+//                    true)
+        // Start observing livedata
+        userViewModel.userLiveData.observe(viewLifecycleOwner) { liveUser ->
+            user = liveUser
+//            Log.d(TAG, user!!.uuid)
+            val username = user?.name
+            usernameTextView.text = getString(R.string.welcome_back, username)
+        }
+
+
 
         // Game Recycler View
         val headerAdapter = HeaderAdapter()
@@ -79,7 +94,6 @@ class DashboardFragment : Fragment() {
         val recyclerView: RecyclerView = binding.gameRecyclerView
         recyclerView.adapter = concatAdapter
 
-        // observe view model
         gameListViewModel.gameLiveData.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.isNotEmpty()) {
@@ -88,7 +102,7 @@ class DashboardFragment : Fragment() {
                 }
             }
         }
-
+        // Floating Action Button
         val fab: View = binding.fab
         fab.setOnClickListener{fabOnClick()}
     }
