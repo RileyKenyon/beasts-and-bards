@@ -2,9 +2,11 @@ package com.beastsandbards.android.dashboard.data
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseException
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -26,26 +28,35 @@ class GameSource(user: FirebaseUser) {
 
 
     private val database = Firebase.database
-    var ref = database.getReference("games")
-    var gameLiveData = MutableLiveData<List<Game>?>()
-    var gameData = ref.get().addOnCompleteListener{ data ->
-        val gameListServer : MutableList<Game> = mutableListOf<Game>()
-        for (game in  data.result.children){
-            val gameData = game.value as HashMap<*, *>
-            val g = Game(
-                gameData["id"] as Long,
-                gameData["name"].toString(),
-                listOf<Player>(),
-                gameData["active"] as Boolean
-            )
-            gameListServer.add(g)
+    private var gameLiveData = MutableLiveData<List<Game>?>()
+
+    private val gameOnCompleteListener =
+        OnCompleteListener<DataSnapshot> { data ->
+            try {
+                val gameListServer : MutableList<Game> = mutableListOf<Game>()
+                for (game in data.result.children) {
+                    val gameData = game.value as HashMap<*, *>
+                    val g = Game(
+                        gameData["id"] as Long,
+                        gameData["name"].toString(),
+                        listOf<Player>(),
+                        gameData["active"] as Boolean
+                    )
+                    gameListServer.add(g)
+                }
+                // Post sorted game list
+                val localList =
+                    gameListServer.sortedBy { it.name.lowercase() }.sortedByDescending { it.active }
+                gameLiveData.postValue(localList)
+
+            } catch (e: DatabaseException) {
+                // Database access error - permission denied
+                Log.d(TAG, e.toString())
+            }
         }
-        val localList = gameListServer.sortedBy { it.name.lowercase() }.sortedByDescending { it.active }
-        gameLiveData.postValue(localList)
-    }
 
     // TODO: Clean up listener code - should request games only from player
-    private val gameListener = object : ValueEventListener {
+    private val gameValueEventListener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
             if (snapshot.childrenCount > 0) {
                 var gameListServer : MutableList<Game> = mutableListOf<Game>()
@@ -72,8 +83,11 @@ class GameSource(user: FirebaseUser) {
         }
     }
 
-    // Attach callback for data updates
-    val listener = ref.addValueEventListener(gameListener)
+    // Attach callbacks for data updates
+    private var ref = database.getReference("games").also { ref ->
+        ref.get().addOnCompleteListener(gameOnCompleteListener)
+        ref.addValueEventListener(gameValueEventListener)
+    }
 
     fun addGame(game: Game) {
         val currentList = gameLiveData.value
