@@ -1,0 +1,107 @@
+{
+  "project_info": {
+    "project_number": "604995607903",
+    "firebase_url": "https://dndweb-default-rtdb.firebaseio.com",
+    "project_id": "dndweb",
+    "storage_bucket": "dndweb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604995607903:android:7f975c282e8eaaaefe2aea",
+        "android_client_info": {
+          "package_name": "com.beastsandbards.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "604995607903-c4bjp0o5ta8tnvipou566il0b4m45gi5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.beastsandbards.android",
+            "certificate_hash": "96ac0d9a37bf7c9d9e8c1730c90ef70e04ef9f70"
+          }
+        },
+        {
+          "client_id": "604995607903-dguckae3u4lhpct3nm6hk8kuv2fmmckp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.beastsandbards.android",
+            "certificate_hash": "7e9e68d14e04a07236044414891263ac8e7267c8"
+          }
+        },
+        {
+          "client_id": "604995607903-u3h94a3ghl1nhjlebpkbgd714vknu259.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.beastsandbards.android",
+            "certificate_hash": "1cd8d6df72e58e2327f4bb2c5d700eaa035fcadd"
+          }
+        },
+        {
+          "client_id": "604995607903-47df72q5tq784l1a5d2hajepo02rta6e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCk3WXn8ozkHKF4oi1OdjrLwv5cjAbisUU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "604995607903-47df72q5tq784l1a5d2hajepo02rta6e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "604995607903-ls657qr8e0eiojg7ojb73ob690rnmvfs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.beastsAndBards"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604995607903:android:628907a023980357fe2aea",
+        "android_client_info": {
+          "package_name": "com.example.beasts_and_bards"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "604995607903-47df72q5tq784l1a5d2hajepo02rta6e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCk3WXn8ozkHKF4oi1OdjrLwv5cjAbisUU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "604995607903-47df72q5tq784l1a5d2hajepo02rta6e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "604995607903-ls657qr8e0eiojg7ojb73ob690rnmvfs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.beastsAndBards"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
