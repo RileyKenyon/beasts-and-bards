@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>604995607903-ls657qr8e0eiojg7ojb73ob690rnmvfs.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.604995607903-ls657qr8e0eiojg7ojb73ob690rnmvfs</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>604995607903-c4bjp0o5ta8tnvipou566il0b4m45gi5.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAPy4Nij0fN7f9A5bkL0-qNP78y4ZZgP4k</string>
+	<key>GCM_SENDER_ID</key>
+	<string>604995607903</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.beastsAndBards</string>
+	<key>PROJECT_ID</key>
+	<string>dndweb</string>
+	<key>STORAGE_BUCKET</key>
+	<string>dndweb.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:604995607903:ios:8b0edc3e5d02be37fe2aea</string>
+	<key>DATABASE_URL</key>
+	<string>https://dndweb-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
