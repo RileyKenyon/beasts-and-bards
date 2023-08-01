@@ -1,7 +1,7 @@
 # Beasts and Bards
 An application for managing Dungeon & Dragon campaigns, stats, and encounter handling.
 
-![](https://github.com/RileyKenyon/beasts-and-bards/blob/update-readme/media/beasts_and_bards_demo.gif)
+![](https://github.com/RileyKenyon/beasts-and-bards/blob/main/media/beasts_and_bards_demo.gif)
 
 ## Setup
 Install flutter - follow [instructions for platform](https://docs.flutter.dev/get-started/install).
