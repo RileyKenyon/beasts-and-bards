@@ -7,6 +7,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:provider/provider.dart';
 import 'nfc_notifier.dart';
+import 'pb.dart';
 import 'src/dio_widgets.dart';
 import 'data/character.dart';
 
@@ -119,23 +120,34 @@ class _NewCharacterPage extends State<NewCharacterPage> {
                   builder: (context, value, child) {
                     return ElevatedButton(
                       onPressed: () async {
-                        Character character = Character(
-                            name: nameController.text,
-                            race: raceController.text,
-                            abilities: Abilities(
-                                charisma: int.parse(abilityControllers[0].text),
-                                constitution:
-                                    int.parse(abilityControllers[1].text),
-                                dexterity:
-                                    int.parse(abilityControllers[2].text),
-                                intelligence:
-                                    int.parse(abilityControllers[3].text),
-                                strength: int.parse(abilityControllers[4].text),
-                                wisdom: int.parse(abilityControllers[5].text)),
-                            gameId: widget.appState.activeGameId,
-                            uuid: '');
-                        final Character created =
-                            await widget.appState.addCharacterToDatabase(character);
+                        final Character created;
+                        try {
+                          created = await widget.appState
+                              .addCharacterToDatabase(Character(
+                                  name: nameController.text,
+                                  race: raceController.text,
+                                  abilities: Abilities(
+                                      charisma:
+                                          int.parse(abilityControllers[0].text),
+                                      constitution:
+                                          int.parse(abilityControllers[1].text),
+                                      dexterity:
+                                          int.parse(abilityControllers[2].text),
+                                      intelligence:
+                                          int.parse(abilityControllers[3].text),
+                                      strength:
+                                          int.parse(abilityControllers[4].text),
+                                      wisdom: int.parse(
+                                          abilityControllers[5].text)),
+                                  gameId: widget.appState.activeGameId,
+                                  uuid: ''));
+                        } catch (e) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(errorMessage(e))));
+                          }
+                          return;
+                        }
                         value.setPayload(created.uuid);
                         if (!context.mounted) return;
 

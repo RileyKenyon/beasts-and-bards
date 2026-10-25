@@ -70,7 +70,7 @@ String errorMessage(Object e) {
     final fields = data is Map
         ? [
             for (final entry in data.entries)
-              '${entry.key}: ${(entry.value as Map?)?['message']}'
+              '${entry.key}: ${entry.value is Map ? entry.value['message'] : entry.value}'
           ]
         : <String>[];
     return fields.isEmpty ? msg : '$msg ${fields.join(', ')}';

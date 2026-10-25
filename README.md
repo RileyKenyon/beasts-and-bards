@@ -62,6 +62,8 @@ Run the app against it (`10.0.2.2` is the host from an Android emulator):
 cd beasts_and_bards
 flutter run --dart-define=PB_URL=http://127.0.0.1:8090
 ```
+Access rules are covered by `pocketbase/rules_test.py`: start a fresh server (`./pocketbase serve --dir /tmp/pbtest`) and run `python3 rules_test.py`.
+
 Verification and password-reset mails need SMTP configured in the PocketBase admin UI (Settings > Mail); without it, sign-in still works.
 
 ### Cool website for fonts
