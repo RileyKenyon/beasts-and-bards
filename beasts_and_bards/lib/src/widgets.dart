@@ -250,10 +250,7 @@ class MonsterWidget extends StatelessWidget {
           if (monster.abilityScores[key] != null)
             Text("$label: ${monster.abilityScores[key]}"),
         const SizedBox(height: 16),
-        Text(
-          "Source: SRD 5.2 © Wizards of the Coast, CC BY 4.0, via Open5e",
-          style: theme.bodySmall,
-        ),
+        SelectableText(srdAttribution, style: theme.bodySmall),
       ],
     );
   }
