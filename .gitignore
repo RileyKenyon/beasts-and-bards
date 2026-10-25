@@ -8,6 +8,7 @@ yarn-error.log*
 # PocketBase binary and local data
 pocketbase/*
 !pocketbase/pb_migrations
+!pocketbase/rules_test.py
 
 # Runtime data
 pids
