@@ -222,15 +222,41 @@ class MonsterWidget extends StatelessWidget {
   const MonsterWidget({super.key, required this.monster});
   final Monster monster;
 
+  static const _abilities = [
+    ('strength', 'STR'),
+    ('dexterity', 'DEX'),
+    ('constitution', 'CON'),
+    ('intelligence', 'INT'),
+    ('wisdom', 'WIS'),
+    ('charisma', 'CHA'),
+  ];
+
   @override
-  Widget build(BuildContext context) => ListView(
-        children: [
-          Text(monster.name),
-          monster.imageUrl != ""
-              ? getDndApiImage(monster.imageUrl)
-              : const Icon(Icons.question_mark),
-        ],
-      );
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context).textTheme;
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        Text(monster.name, style: theme.headlineLarge),
+        Text([monster.size, monster.type].whereType<String>().join(' ')),
+        const SizedBox(height: 8),
+        if (monster.armorClass != null)
+          Text("Armor Class: ${monster.armorClass}"),
+        if (monster.hitPoints != null) Text("Hit Points: ${monster.hitPoints}"),
+        if (monster.challengeRatingLabel != null)
+          Text("Challenge: ${monster.challengeRatingLabel}"),
+        const SizedBox(height: 8),
+        for (final (key, label) in _abilities)
+          if (monster.abilityScores[key] != null)
+            Text("$label: ${monster.abilityScores[key]}"),
+        const SizedBox(height: 16),
+        Text(
+          "Source: SRD 5.2 © Wizards of the Coast, CC BY 4.0, via Open5e",
+          style: theme.bodySmall,
+        ),
+      ],
+    );
+  }
 }
 
 class AbilityWidget extends StatelessWidget {

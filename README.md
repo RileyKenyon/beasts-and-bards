@@ -78,6 +78,9 @@ PB_ENCRYPTION_KEY=<32 characters> ./pocketbase serve --encryptionEnv=PB_ENCRYPTI
 ```
 The hook is covered by `pocketbase/hooks_test.py` (run `python3 hooks_test.py` in `pocketbase/`; it starts the binary itself).
 
+### Monster data
+The Monsters tab reads the SRD 5.2 (2024) creatures from the Open5e API (https://api.open5e.com/v2/). SRD 5.2 is © Wizards of the Coast, CC BY 4.0.
+
 ### Cool website for fonts
 Iceberg font obtained here:
 https://fonts.google.com/
