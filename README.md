@@ -64,7 +64,19 @@ flutter run --dart-define=PB_URL=http://127.0.0.1:8090
 ```
 Access rules are covered by `pocketbase/rules_test.py`: start a fresh server (`./pocketbase serve --dir /tmp/pbtest`) and run `python3 rules_test.py`.
 
-Verification and password-reset mails need SMTP configured in the PocketBase admin UI (Settings > Mail); without it, sign-in still works.
+Verification and password-reset mails go through Resend when `RESEND_API_KEY` is set (`pocketbase/pb_hooks/smtp.pb.js` applies the SMTP settings on every start). The sender (Settings > Mail in the admin UI, or `MAIL_FROM` to override on start) must be an address on a domain verified in Resend; `onboarding@resend.dev` only delivers to your Resend account email.
+
+Links in those mails use the Application URL, which defaults to `http://localhost:8090` and does not work from a phone. Set it to the server's public address in Settings > Application, or with `APP_URL` on start.
+```
+RESEND_API_KEY=re_xxx MAIL_FROM=noreply@yourdomain.com APP_URL=https://pb.yourdomain.com ./pocketbase serve
+```
+Without the key, no mail is sent, but sign-in still works.
+
+The key is saved in `pb_data/data.db` and in backups. To encrypt saved settings, add a 32-character secret and pass `--encryptionEnv` to every PocketBase command, including `superuser upsert`; without the flag it cannot read the settings. Keep the secret out of the repo. Settings saved earlier are encrypted the next time they are saved, and older backups stay readable in plain text.
+```
+PB_ENCRYPTION_KEY=<32 characters> ./pocketbase serve --encryptionEnv=PB_ENCRYPTION_KEY
+```
+The hook is covered by `pocketbase/hooks_test.py` (run `python3 hooks_test.py` in `pocketbase/`; it starts the binary itself).
 
 ### Cool website for fonts
 Iceberg font obtained here:
