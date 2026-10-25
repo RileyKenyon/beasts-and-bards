@@ -50,12 +50,20 @@ flutter doctor --android-licenses
 You can do this for Android Studio / VS Code - I'll be using VS Code
 https://docs.flutter.dev/get-started/editor?tab=androidstudio
 
-### Add firebase support
-Follow the firebase setup for apps:
-https://firebase.google.com/docs/flutter/setup?platform=android
+### Run the backend (PocketBase)
+Download the PocketBase binary for your OS from https://pocketbase.io/docs/ into `pocketbase/` and start it. Migrations in `pocketbase/pb_migrations` create the collections and access rules on first start.
 ```
-dart pub global activate flutterfire_cli
+cd pocketbase
+./pocketbase serve
+# create a superuser: ./pocketbase superuser upsert you@example.com <password>
 ```
+Run the app against it (`10.0.2.2` is the host from an Android emulator):
+```
+cd beasts_and_bards
+flutter run --dart-define=PB_URL=http://127.0.0.1:8090
+```
+Verification and password-reset mails need SMTP configured in the PocketBase admin UI (Settings > Mail); without it, sign-in still works.
+
 ### Cool website for fonts
 Iceberg font obtained here:
 https://fonts.google.com/

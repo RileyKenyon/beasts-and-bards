@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class Abilities {
   Abilities({
@@ -15,6 +15,17 @@ class Abilities {
   final int intelligence;
   final int strength;
   final int wisdom;
+
+  factory Abilities.fromJson(Map<String, dynamic> m) {
+    int v(String k) => (m[k] as num?)?.toInt() ?? 0;
+    return Abilities(
+        charisma: v('charisma'),
+        constitution: v('constitution'),
+        dexterity: v('dexterity'),
+        intelligence: v('intelligence'),
+        strength: v('strength'),
+        wisdom: v('wisdom'));
+  }
 
   Map<String, dynamic> toJson() {
     return {
@@ -44,47 +55,27 @@ class Character {
   final String uuid;
   final bool active;
 
-  factory Character.fromFirestore(
-    DocumentSnapshot<Map<String, dynamic>> snapshot,
-    SnapshotOptions? options,
-  ) {
-    final data = snapshot.data();
+  factory Character.fromRecord(RecordModel r) {
+    final abilities = r.data['abilities'];
     return Character(
-      name: data?['name'],
-      race: data?['race'],
-      abilities: data?['abilities'] is Map
-          ? getAbilitiesFromMap(Map.from(data?['abilities']))
-          : Abilities(
-              charisma: 0,
-              constitution: 0,
-              dexterity: 0,
-              intelligence: 0,
-              strength: 0,
-              wisdom: 0),
-      gameId: data?['gameId'],
-      uuid: data?['uuid'],
-      active: data?['active'],
+      name: r.getStringValue('name'),
+      race: r.getStringValue('race'),
+      abilities: Abilities.fromJson(
+          abilities is Map ? Map<String, dynamic>.from(abilities) : {}),
+      gameId: r.getStringValue('game'),
+      uuid: r.id,
+      active: r.getBoolValue('active'),
     );
   }
 
-  Map<String, dynamic> toFirestore() {
+  /// Body for creating the record. `owner` is added by `ApplicationState`.
+  Map<String, dynamic> toJson() {
     return {
       "name": name,
       "race": race,
       "abilities": abilities.toJson(),
-      "gameId": gameId,
-      "uuid": uuid,
+      "game": gameId,
       "active": active,
     };
   }
-}
-
-Abilities getAbilitiesFromMap(Map<String, int> m) {
-  return Abilities(
-      charisma: m['charisma'] ?? 0,
-      constitution: m['constitution'] ?? 0,
-      dexterity: m['dexterity'] ?? 0,
-      intelligence: m['intelligence'] ?? 0,
-      strength: m['strength'] ?? 0,
-      wisdom: m['wisdom'] ?? 0);
 }

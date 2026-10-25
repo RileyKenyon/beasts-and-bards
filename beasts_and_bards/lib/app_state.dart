@@ -3,246 +3,116 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart'
-    hide EmailAuthProvider, PhoneAuthProvider;
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
+import 'package:pocketbase/pocketbase.dart';
+
+import 'data/character.dart';
 import 'data/friend.dart';
 import 'data/game.dart';
-import 'firebase_options.dart';
-import 'dart:io';
-import 'data/character.dart';
+import 'pb.dart';
 
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
-    init();
+    _authSubscription = pb.authStore.onChange.listen((_) => _onAuthChanged());
+    _onAuthChanged();
   }
 
-  bool _loggedIn = false;
+  StreamSubscription<AuthStoreEvent>? _authSubscription;
+  StreamSubscription<List<RecordModel>>? _friendsListSubscription;
 
-  bool get loggedIn => _loggedIn;
+  RecordModel? get _user =>
+      pb.authStore.isValid && pb.authStore.model is RecordModel
+          ? pb.authStore.model as RecordModel
+          : null;
 
-  bool _emailVerified = false;
+  bool get loggedIn => _user != null;
 
-  bool get emailVerified => _emailVerified;
+  bool get emailVerified => _user?.getBoolValue('verified') ?? false;
 
-  Uuid uuidGen = const Uuid();
+  String get userId => _user?.id ?? '';
 
-  // StreamSubscription<QuerySnapshot>? _databaseSubscription;
-  StreamSubscription<QuerySnapshot>? _friendsListSubscription;
+  String get email => _user?.getStringValue('email') ?? '';
+
+  String get userName => _user?.getStringValue('name') ?? '';
+
   List<Friend> _friendsList = [];
   List<Friend> get friendsList => _friendsList;
 
-  // Add game list for user
-  List<Game> _gameList = [];
-  List<Game> get gameList => _gameList;
   String activeGameId = "";
 
-  Future<void> init() async {
-    await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
-    if (kDebugMode) {
-      await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-      FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
-    }
-    FirebaseUIAuth.configureProviders([
-      EmailAuthProvider(),
-    ]);
-
-    if (loggedIn && FirebaseAuth.instance.currentUser != null) {
-      _friendsListSubscription = FirebaseFirestore.instance
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser?.uid)
-          .collection('friendslist')
-          .snapshots()
-          .listen((snapshot) {
-        _friendsList = [];
-        for (final friend in snapshot.docs) {
-          if (friend.data()['name'] != null) {
-            _friendsList.add(
+  void _onAuthChanged() {
+    _friendsListSubscription?.cancel();
+    _friendsListSubscription = null;
+    _friendsList = [];
+    if (loggedIn) {
+      _friendsListSubscription =
+          watch('friends', filter: 'owner = "$userId"', expand: 'friend')
+              .listen((records) {
+        _friendsList = [
+          for (final r in records)
+            if (r.expand['friend']?.isNotEmpty ?? false)
               Friend(
-                name: friend.data()['name'] as String,
-                message: "",
-              ),
-            );
-          }
-        }
+                  name: r.expand['friend']!.first.getStringValue('name'),
+                  message: ""),
+        ];
         notifyListeners();
-      });
-      // _databaseSubscription = FirebaseFirestore.instance
-      //     .collection('games')
-      //     .snapshots()
-      //     .listen((snapshot) {
-      //   _gameList = [];
-      //   for (final doc in snapshot.docs) {
-      //     List<Friend> players = [];
-      //     for (final f in doc.data()['players']) {
-      //       players.add(Friend(name: f, message: ""));
-      //     }
-      //     _gameList.add(Game(
-      //         name: doc.data()['text'],
-      //         players: players,
-      //         gameId: doc.id,
-      //         dm: doc.data()['name'],
-      //         active: false));
-      //   }
-      //   stdout.writeln('Number of games ${snapshot.docs.length}');
-      //   notifyListeners();
-      // });
+      }, onError: (Object _) {});
     }
-
-    FirebaseAuth.instance.userChanges().listen((user) {
-      if (user != null) {
-        _loggedIn = true;
-        _emailVerified = user.emailVerified;
-        _friendsListSubscription = FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .collection('friendslist')
-            .snapshots()
-            .listen((snapshot) {
-          _friendsList = [];
-          for (final friend in snapshot.docs) {
-            if (friend.data()['name'] != null) {
-              _friendsList.add(
-                Friend(
-                  name: friend.data()['name'] as String,
-                  message: "",
-                ),
-              );
-            }
-          }
-          notifyListeners();
-        });
-        // _databaseSubscription = FirebaseFirestore.instance
-        //     .collection('games')
-        //     .snapshots()
-        //     .listen((snapshot) {
-        //   _gameList = [];
-        //   for (final doc in snapshot.docs) {
-        //     List<Friend> players = [];
-        //     if (doc.data()['players'] != null) {
-        //       List<String> playerNames = List.from(doc.data()['players']);
-        //       for (final f in playerNames) {
-        //         players.add(Friend(name: f, message: ""));
-        //       }
-        //     }
-        //     _gameList.add(
-        //       Game(
-        //           name: doc.data()['text'],
-        //           players: players,
-        //           gameId: doc.id,
-        //           dm: doc.data()['name'],
-        //           active: false),
-        //     );
-        //   }
-        //   stdout.writeln('Number of games ${snapshot.docs.length}');
-        //   notifyListeners();
-        // });
-      } else {
-        _loggedIn = false;
-        _emailVerified = false;
-        // _databaseSubscription?.cancel();
-      }
-      notifyListeners();
-    });
+    notifyListeners();
   }
+
+  @override
+  void dispose() {
+    _authSubscription?.cancel();
+    _friendsListSubscription?.cancel();
+    super.dispose();
+  }
+
+  Future<void> signIn(String email, String password) async {
+    await pb.collection('users').authWithPassword(email, password);
+  }
+
+  /// Creates the account, sends the verification mail and signs in.
+  Future<void> register(String email, String password) async {
+    await pb.collection('users').create(body: {
+      'email': email,
+      'password': password,
+      'passwordConfirm': password,
+      'name': email.split('@')[0],
+    });
+    await pb.collection('users').requestVerification(email);
+    await signIn(email, password);
+  }
+
+  Future<void> requestPasswordReset(String email) =>
+      pb.collection('users').requestPasswordReset(email);
+
+  void signOut() => pb.authStore.clear();
 
   Future<void> refreshLoggedInUser() async {
-    final currentUser = FirebaseAuth.instance.currentUser;
-
-    if (currentUser == null) {
-      return;
-    }
-
-    await currentUser.reload();
-  }
-
-  Future<DocumentReference> submitGameToDatabase(String message) {
-    if (!_loggedIn) {
-      throw Exception('Must be logged in');
-    }
-
-    return FirebaseFirestore.instance.collection('games').add(<String, dynamic>{
-      'text': message,
-      'timestamp': DateTime.now().millisecondsSinceEpoch,
-      'name': FirebaseAuth.instance.currentUser!.displayName,
-      'userId': FirebaseAuth.instance.currentUser!.uid,
-    });
+    if (!loggedIn) return;
+    await pb.collection('users').authRefresh();
   }
 
   Future<void> addGameToDatabase(Game newgame) {
-    if (!_loggedIn || FirebaseAuth.instance.currentUser == null) {
+    if (!loggedIn) {
       throw Exception('Must be logged in');
     }
-
-    // List<String> playerNames = [];
-    // for (final player in newgame.players) {
-    //   playerNames.add(player.name);
-    // }
-
-    DocumentReference ref = FirebaseFirestore.instance
+    return pb
         .collection('games')
-        .withConverter(
-            fromFirestore: Game.fromFirestore,
-            toFirestore: (Game game, options) => game.toFirestore())
-        .doc(newgame.gameId);
-
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('games')
-        .doc(newgame.gameId)
-        .set({'gameRef': ref});
-
-    return ref.set(newgame);
+        .create(body: {...newgame.toJson(), 'dm': userId});
   }
 
-  Future<void> addCharacterToActiveGame(Character character) {
-    if (!_loggedIn || FirebaseAuth.instance.currentUser == null) {
+  /// Creates [character] for the current user and returns it with its
+  /// server-assigned id in `uuid`.
+  Future<Character> addCharacterToDatabase(Character character) async {
+    if (!loggedIn) {
       throw Exception('Must be logged in');
     }
-    DocumentReference db =
-        FirebaseFirestore.instance.collection('games').doc(activeGameId);
-    return db.update({
-      'playersId': FieldValue.arrayUnion([character.uuid])
-      // 'players': [character.name],
-    });
-  }
-
-  Future<void> addCharacterToDatabase(
-      Character character, String gameId) async {
-    if (!_loggedIn || FirebaseAuth.instance.currentUser == null) {
-      throw Exception('Must be logged in');
-    }
-
-    DocumentReference ref = FirebaseFirestore.instance
-        .collection('character')
-        .withConverter(
-            fromFirestore: Character.fromFirestore,
-            toFirestore: (Character character, options) =>
-                character.toFirestore())
-        .doc(character.uuid);
-
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
+    final record = await pb
         .collection('characters')
-        .add({'ref': ref});
-
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('games')
-        .doc(gameId)
-        .update({'characterRef': ref});
-
-    return ref.set(character);
+        .create(body: {...character.toJson(), 'owner': userId});
+    return Character.fromRecord(record);
   }
 }

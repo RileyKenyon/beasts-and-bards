@@ -1,10 +1,7 @@
 import 'package:beasts_and_bards/data/friend.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:uuid/uuid.dart';
 import 'app_state.dart';
 import 'src/widgets.dart';
 import 'data/game.dart';
@@ -15,8 +12,6 @@ class CreateGameForm extends StatefulWidget {
 
   @override
   State<CreateGameForm> createState() => _CreateGameFormState();
-
-  void submitGame(String gameName) => {appState.submitGameToDatabase(gameName)};
 }
 
 class _CreateGameFormState extends State<CreateGameForm> {
@@ -44,7 +39,6 @@ class _CreateGameFormState extends State<CreateGameForm> {
 
   @override
   Widget build(BuildContext context) {
-    Uuid uuidGenerator = const Uuid();
     return Scaffold(
       appBar: AppBar(title: const Text("START A NEW ADVENTURE")),
       body: Padding(
@@ -103,16 +97,12 @@ class _CreateGameFormState extends State<CreateGameForm> {
                 child:
                     const IconAndDetail(Icons.insert_emoticon_sharp, "Submit"),
                 onPressed: () {
-                  final String? username =
-                      FirebaseAuth.instance.currentUser?.displayName;
-                  if (username != null) {
+                  if (widget.appState.loggedIn) {
                     widget.appState.addGameToDatabase(
                       Game(
                           name: textController.text,
                           playersId: partyList,
-                          gameId: uuidGenerator.v1(),
-                          dm: username,
-                          active: false),
+                          gameId: ''),
                     );
                     context.pushReplacement('/dashboard');
                   }

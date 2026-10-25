@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nfc_manager/nfc_manager.dart';
-import 'package:uuid/uuid.dart';
 import 'package:provider/provider.dart';
 import 'nfc_notifier.dart';
 import 'src/dio_widgets.dart';
@@ -17,12 +16,6 @@ class NewCharacterPage extends StatefulWidget {
 
   @override
   State<NewCharacterPage> createState() => _NewCharacterPage();
-
-  Set<Future<void>> submitCharacterToDatabase(Character c) =>
-      {appState.addCharacterToDatabase(c, appState.activeGameId)};
-
-  Set<Future<void>> addCharacterToActiveGame(Character c) =>
-      {appState.addCharacterToActiveGame(c)};
 }
 
 class _NewCharacterPage extends State<NewCharacterPage> {
@@ -125,9 +118,7 @@ class _NewCharacterPage extends State<NewCharacterPage> {
                 Consumer<NdefWriteModel>(
                   builder: (context, value, child) {
                     return ElevatedButton(
-                      onPressed: () {
-                        Uuid uuid = const Uuid();
-                        String id = uuid.v1();
+                      onPressed: () async {
                         Character character = Character(
                             name: nameController.text,
                             race: raceController.text,
@@ -142,10 +133,11 @@ class _NewCharacterPage extends State<NewCharacterPage> {
                                 strength: int.parse(abilityControllers[4].text),
                                 wisdom: int.parse(abilityControllers[5].text)),
                             gameId: widget.appState.activeGameId,
-                            uuid: id);
-                        widget.submitCharacterToDatabase(character);
-                        widget.addCharacterToActiveGame(character);
-                        value.setPayload(id);
+                            uuid: '');
+                        final Character created =
+                            await widget.appState.addCharacterToDatabase(character);
+                        value.setPayload(created.uuid);
+                        if (!context.mounted) return;
 
                         // Check if NFC is supported and not written to
                         if (Provider.of<NfcModel>(context, listen: false)
