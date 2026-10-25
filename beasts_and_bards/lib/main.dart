@@ -7,13 +7,14 @@ import 'package:beasts_and_bards/friends_list_page.dart';
 import 'package:beasts_and_bards/new_character_form.dart';
 import 'package:beasts_and_bards/nfc_reader.dart';
 import 'package:beasts_and_bards/src/widgets.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'app_state.dart';
+import 'auth_pages.dart';
+import 'pb.dart';
 import 'home_page.dart';
 import 'dashboard_page.dart';
 import 'create_game_form.dart';
@@ -22,8 +23,9 @@ import 'src/dio_widgets.dart';
 import 'data/game.dart';
 import 'nfc_notifier.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initPocketBase();
 
   runApp(MultiProvider(
     providers: [
@@ -45,82 +47,18 @@ final _router = GoRouter(
       routes: [
         GoRoute(
           path: 'sign-in',
-          builder: (context, state) {
-            return SignInScreen(
-              actions: [
-                ForgotPasswordAction(((context, email) {
-                  final uri = Uri(
-                    path: '/sign-in/forgot-password',
-                    queryParameters: <String, String?>{
-                      'email': email,
-                    },
-                  );
-                  context.push(uri.toString());
-                })),
-                AuthStateChangeAction(((context, state) {
-                  if (state is SignedIn || state is UserCreated) {
-                    var user = (state is SignedIn)
-                        ? state.user
-                        : (state as UserCreated).credential.user;
-                    if (user == null) {
-                      return;
-                    }
-                    if (state is UserCreated) {
-                      user.updateDisplayName(user.email!.split('@')[0]);
-                    }
-                    if (!user.emailVerified) {
-                      user.sendEmailVerification();
-                      const snackBar = SnackBar(
-                          content: Text(
-                              'Please check your email to verify your email address'));
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    }
-                    context.replace('/');
-                  }
-                })),
-              ],
-            );
-          },
+          builder: (context, state) => const SignInPage(),
           routes: [
             GoRoute(
               path: 'forgot-password',
-              builder: (context, state) {
-                final arguments = state.queryParams;
-                return ForgotPasswordScreen(
-                  email: arguments['email'],
-                  headerMaxExtent: 200,
-                );
-              },
+              builder: (context, state) =>
+                  ForgotPasswordPage(email: state.queryParams['email']),
             ),
           ],
         ),
         GoRoute(
           path: 'profile',
-          builder: (context, state) {
-            return Consumer<ApplicationState>(
-              builder: (context, appState, _) => ProfileScreen(
-                key: ValueKey(appState.emailVerified),
-                providers: const [],
-                actions: [
-                  SignedOutAction(
-                    ((context) {
-                      context.pushReplacement('/');
-                    }),
-                  ),
-                ],
-                children: [
-                  Visibility(
-                      visible: !appState.emailVerified,
-                      child: OutlinedButton(
-                        child: const Text('Recheck Verification State'),
-                        onPressed: () {
-                          appState.refreshLoggedInUser();
-                        },
-                      ))
-                ],
-              ),
-            );
-          },
+          builder: (context, state) => const ProfilePage(),
         ),
         GoRoute(
           path: 'dashboard',

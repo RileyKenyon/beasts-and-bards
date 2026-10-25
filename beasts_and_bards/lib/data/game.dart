@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class Game {
   Game(
@@ -8,33 +8,31 @@ class Game {
       this.dm = "",
       this.active = false});
   final String name;
+
+  /// User ids of the invited players.
   final List<String> playersId;
   final String gameId;
+
+  /// Display name of the dungeon master (needs `expand: 'dm'`).
   final String dm;
   final bool active;
 
-  factory Game.fromFirestore(
-    DocumentSnapshot<Map<String, dynamic>> snapshot,
-    SnapshotOptions? options,
-  ) {
-    final data = snapshot.data();
+  factory Game.fromRecord(RecordModel r) {
     return Game(
-      name: data?['name'],
-      playersId: data?['playersId'] is Iterable
-          ? List.from(data?['playersId'])
-          : List<String>.empty(growable: true),
-      gameId: data?['gameId'],
-      dm: data?['dm'],
+      name: r.getStringValue('name'),
+      playersId: r.getListValue<String>('players'),
+      gameId: r.id,
+      dm: r.expand['dm']?.first.getStringValue('name') ?? '',
+      active: r.getBoolValue('active'),
     );
   }
 
-  Map<String, dynamic> toFirestore() {
+  /// Body for creating the record. `dm` is added by `ApplicationState`.
+  Map<String, dynamic> toJson() {
     return {
-      "gameId": gameId,
-      "dm": dm,
       "name": name,
       "active": active,
-      "playersId": List<String>.from(playersId),
+      "players": playersId,
     };
   }
 }

@@ -7,14 +7,14 @@ import 'dart:ffi';
 import 'dart:math' as math;
 
 import 'package:beasts_and_bards/app_state.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pocketbase/pocketbase.dart';
 import 'package:flutter/material.dart';
 import 'package:beasts_and_bards/data/game.dart';
 import 'package:beasts_and_bards/src/dio_widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../pb.dart';
 import 'package:beasts_and_bards/data/character.dart';
 
 class Header extends StatelessWidget {
@@ -269,45 +269,32 @@ class CharacterInfoWidget extends StatefulWidget {
 }
 
 class _CharacterInfoWidget extends State<CharacterInfoWidget> {
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  late final Stream<List<RecordModel>>? _stream = pb.authStore.isValid
+      ? watch('characters',
+          filter:
+              'game = "${widget.streamId}" && owner = "${pb.authStore.model.id}"')
+      : null;
 
   @override
   Widget build(BuildContext context) {
-    if (FirebaseAuth.instance.currentUser != null) {
-      var snapshot = getCharacterStream(widget.streamId);
-      return FutureBuilder(
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data != null) {
-            return StreamBuilder(
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting ||
-                      snapshot.connectionState == ConnectionState.none) {
-                    return const CircularProgressIndicator();
-                  } else {
-                    if (snapshot.hasData &&
-                        snapshot.data != null &&
-                        snapshot.data!.data() != null) {
-                      final character = snapshot.data!.data()!;
-                      return DisplayCharacterInfoWidget(character);
-                    } else {
-                      return const Text("Create your character to view stats!");
-                    }
-                  }
-                },
-                stream: snapshot.data);
-          } else {
-            return const Center(
-                child: Text("Create your character to view stats!"));
-          }
-        },
-        future: snapshot,
-      );
-    } else {
+    if (_stream == null) {
       return const Center(child: Text('You are not authenticated'));
     }
+    return StreamBuilder<List<RecordModel>>(
+      stream: _stream,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting ||
+            snapshot.connectionState == ConnectionState.none) {
+          return const CircularProgressIndicator();
+        }
+        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+          return DisplayCharacterInfoWidget(
+              Character.fromRecord(snapshot.data!.first));
+        }
+        return const Center(
+            child: Text("Create your character to view stats!"));
+      },
+    );
   }
 }
 
@@ -320,92 +307,77 @@ class PartyWidget extends StatefulWidget {
 }
 
 class _PartyWidget extends State<PartyWidget> {
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  late final Stream<List<RecordModel>> _game =
+      watch('games', filter: 'id = "${widget.streamId}"', expand: 'dm');
+  late final Stream<List<RecordModel>> _characters =
+      watch('characters', filter: 'game = "${widget.streamId}"');
 
   @override
   Widget build(BuildContext context) {
     TextTheme theme = Theme.of(context).textTheme;
-    if (FirebaseAuth.instance.currentUser != null) {
-      final Future<DocumentSnapshot?> ref =
-          getGameRefDocumentSnapshot(widget.streamId);
-      return Center(
-        child: FutureBuilder(
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting ||
-                snapshot.connectionState == ConnectionState.none) {
-              return const CircularProgressIndicator();
-            } else {
-              if (snapshot.hasData && snapshot.data!.data() != null) {
-                final g = snapshot.data!.data()! as Game;
-                return ListView(
-                  children: [
-                    // // Diagnostic
-                    ListTile(
-                      title: Text(
-                        g.name,
-                        style: theme.headlineLarge,
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Dungeon Master: ${g.dm}"),
-                          Text("Number of players: ${g.playersId.length}"),
-                          Text("Game ID: ${g.gameId}"),
-                        ],
-                      ),
-                      leading: const Icon(
-                        Icons.shield,
-                        size: 50,
-                        color: Colors.red,
-                      ),
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const ClampingScrollPhysics(),
-                      itemBuilder: ((context, index) {
-                        return StreamBuilder(
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData && snapshot.data != null) {
-                                Character c = snapshot.data!.data()!;
-                                return ListTile(
-                                    title: Text(c.name),
-                                    subtitle: Text("Race: ${c.race}"),
-                                    onTap: () => {
-                                          context.push('/character-detail',
-                                              extra: c)
-                                        });
-                              } else {
-                                return const Text('Oops');
-                              }
-                            },
-                            stream: FirebaseFirestore.instance
-                                .collection('character')
-                                .doc(g.playersId[index])
-                                .withConverter(
-                                    fromFirestore: Character.fromFirestore,
-                                    toFirestore:
-                                        (Character character, options) =>
-                                            character.toFirestore())
-                                .snapshots());
-                      }),
-                      itemCount: g.playersId.length,
-                    )
-                    // Actual widget
-                  ],
-                );
-              }
-            }
-            return const Text("Something went wrong, timed out");
-          },
-          future: ref,
-        ),
-      );
-    } else {
+    if (!pb.authStore.isValid) {
       return const Text("Oops, Something went wrong");
     }
+    return Center(
+      child: StreamBuilder<List<RecordModel>>(
+        stream: _game,
+        builder: (context, gameSnapshot) {
+          if (gameSnapshot.connectionState == ConnectionState.waiting ||
+              gameSnapshot.connectionState == ConnectionState.none) {
+            return const CircularProgressIndicator();
+          }
+          if (!gameSnapshot.hasData || gameSnapshot.data!.isEmpty) {
+            return const Text("Something went wrong, timed out");
+          }
+          final g = Game.fromRecord(gameSnapshot.data!.first);
+          return StreamBuilder<List<RecordModel>>(
+            stream: _characters,
+            builder: (context, charactersSnapshot) {
+              final characters = [
+                for (final r in charactersSnapshot.data ?? <RecordModel>[])
+                  Character.fromRecord(r)
+              ];
+              return ListView(
+                children: [
+                  ListTile(
+                    title: Text(
+                      g.name,
+                      style: theme.headlineLarge,
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Dungeon Master: ${g.dm}"),
+                        Text("Number of players: ${characters.length}"),
+                        Text("Game ID: ${g.gameId}"),
+                      ],
+                    ),
+                    leading: const Icon(
+                      Icons.shield,
+                      size: 50,
+                      color: Colors.red,
+                    ),
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    itemBuilder: ((context, index) {
+                      final c = characters[index];
+                      return ListTile(
+                          title: Text(c.name),
+                          subtitle: Text("Race: ${c.race}"),
+                          onTap: () =>
+                              context.push('/character-detail', extra: c));
+                    }),
+                    itemCount: characters.length,
+                  )
+                ],
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 }
 
@@ -458,44 +430,6 @@ class DisplayCharacterInfoWidget extends StatelessWidget {
       ],
     );
   }
-}
-
-Future<DocumentSnapshot?> getGameRefDocumentSnapshot(String id) async {
-  final DocumentReference ref = FirebaseFirestore.instance
-      .collection('users')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('games')
-      .doc(id);
-  Future<DocumentSnapshot?> document = ref.get().then((DocumentSnapshot doc) {
-    DocumentReference gameKey = doc.get("gameRef");
-    return gameKey
-        .withConverter(
-            fromFirestore: Game.fromFirestore,
-            toFirestore: (Game game, options) => game.toFirestore())
-        .get();
-  });
-  return document;
-}
-
-/// For this style - use the game ID as the key and return the user's character
-Future<Stream<DocumentSnapshot<Character>>?> getCharacterStream(
-    String id) async {
-  final ref = await getCharacterDocReference(id);
-  return ref
-      .withConverter(
-          fromFirestore: Character.fromFirestore,
-          toFirestore: (Character game, options) => game.toFirestore())
-      .snapshots();
-}
-
-Future<DocumentReference> getCharacterDocReference(id) async {
-  final DocumentReference ref = FirebaseFirestore.instance
-      .collection('users')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('games')
-      .doc(id);
-  DocumentSnapshot snapshot = await ref.get();
-  return await snapshot.get("characterRef");
 }
 
 // Widget for an expandable FAB that has a list of actions [createGame, editFriends]

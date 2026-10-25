@@ -1,9 +1,10 @@
 import 'package:beasts_and_bards/data/game.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 import 'app_state.dart';
+import 'pb.dart';
 import 'src/widgets.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -20,13 +21,9 @@ class _DashboardPage extends State<DashboardPage> {
     super.dispose();
   }
 
-  final Stream<QuerySnapshot<Map<String, dynamic>>> _dashboardStream =
-      FirebaseFirestore.instance
-          .collection('games')
-          // .withConverter(
-          //     fromFirestore: Game.fromFirestore,
-          //     toFirestore: (Game game, options) => game.toFirestore())
-          .snapshots();
+  // Server rules only return the games the user takes part in.
+  final Stream<List<RecordModel>> _dashboardStream =
+      watch('games', expand: 'dm', sort: '-created');
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +48,9 @@ class _DashboardPage extends State<DashboardPage> {
         ),
       ),
       appBar: AppBar(title: const Text("Dashboard")),
-      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+      body: StreamBuilder<List<RecordModel>>(
         stream: _dashboardStream,
-        builder: (context,
-            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+        builder: (context, AsyncSnapshot<List<RecordModel>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
           }
@@ -63,22 +59,17 @@ class _DashboardPage extends State<DashboardPage> {
             return const Text('Oops something went wrong');
           }
 
-          if (snapshot.data == null) {
+          if (snapshot.data!.isEmpty) {
             return const Text('Create a game to get started!');
           }
           return ListView(
-            children: snapshot.data!.docs
-                .map((DocumentSnapshot<Map<String, dynamic>> document) {
-                  // @TODO figure out how to use the Firestore instance withconverter instead
-                  SnapshotOptions? options;
-                  final data = Game.fromFirestore(document, options);
-                  return DashboardListItem(
-                      game: data,
-                      onTap: () =>
-                          {context.push('/game-detail', extra: data.gameId)});
-                })
-                .toList()
-                .cast(),
+            children: snapshot.data!.map((record) {
+              final game = Game.fromRecord(record);
+              return DashboardListItem(
+                  game: game,
+                  onTap: () =>
+                      context.push('/game-detail', extra: game.gameId));
+            }).toList(),
           );
         },
       ),
