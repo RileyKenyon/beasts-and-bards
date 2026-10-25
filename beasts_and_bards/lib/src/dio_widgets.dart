@@ -3,6 +3,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+/// Required credit for the SRD 5.2 (CC BY 4.0), shown with monster data.
+const srdAttribution =
+    'This work includes material from the System Reference Document 5.2 ("SRD 5.2") by Wizards of the Coast LLC, available at https://www.dndbeyond.com/srd. The SRD 5.2 is licensed under the Creative Commons Attribution 4.0 International License, available at https://creativecommons.org/licenses/by/4.0/legalcode. Provided through Open5e (https://open5e.com).';
+
 class DndManager extends StatefulWidget {
   const DndManager({super.key});
 
@@ -19,7 +23,9 @@ class _DndManager extends State<DndManager> {
         future: _future,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Text('Could not load monsters: ${snapshot.error}');
+            debugPrint('Could not load monsters: ${snapshot.error}');
+            return const Text(
+                'Could not load monsters. Check your connection.');
           }
           final monsters = snapshot.data;
           if (monsters == null) {
@@ -59,7 +65,9 @@ class _MonsterDetailsPage extends State<MonsterDetailsPage> {
         builder: (context, snapshot) {
           final Widget child;
           if (snapshot.hasError) {
-            child = Text('Could not load monster: ${snapshot.error}');
+            debugPrint('Could not load monster: ${snapshot.error}');
+            child =
+                const Text('Could not load monster. Check your connection.');
           } else if (snapshot.hasData) {
             child = MonsterWidget(monster: snapshot.data!);
           } else {
